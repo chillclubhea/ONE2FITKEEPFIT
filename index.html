@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>減脂食譜大全</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #16a085;
+            margin: 25px 0 15px 0;
+            font-size: 1.6em;
+        }
+        h3 {
+            color: #e74c3c;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+        .note {
+            background-color: #fffde7;
+            border-left: 4px solid #f1c40f;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95em;
+        }
+        .important {
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        ul, ol {
+            padding-left: 25px;
+            margin: 15px 0;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .category {
+            background-color: #f1f8e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border: 1px solid #dcedc8;
+        }
+        .toggle-btn {
+            cursor: pointer;
+            color: #2980b9;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            user-select: none;
+        }
+        .toggle-btn::before {
+            content: '▶';
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 0.8em;
+            transition: transform 0.3s;
+        }
+        .toggle-btn.active::before {
+            transform: rotate(90deg);
+        }
+        .toggle-content {
+            display: none;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px dashed #ddd;
+            margin: 10px 0 20px 0;
+        }
+        .recipe-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .recipe-list li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid #9b59b6;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="emoji">🍖</span> 減脂食譜大全 (點三角形展開食譜)</h1>
+        
+        <div class="note">
+            <p>（會不定期更新）</p>
+            <p>食譜很豐富！另外一定要了解《外食飲食原則》，就算不想煮，外食也可以吃瘦！</p>
+        </div>
+        
+        <div class="important">
+            <h3>💡必看！211飲食原則：</h3>
+            <p>餐食的部分搭配211飲食可以讓瘦身效果達到最好 每餐 <strong>2份蔬果 + 1份蛋白質 + 1份澱粉</strong>，並且選擇原型食物</p>
+            <p>食物份量的計算：<strong>1份是你自己的一個拳頭大小👊🏽</strong></p>
+            <p>並且以七分飽為主，若吃211會太飽，可以等比例減少，例如：1.5份蔬菜、0.8份蛋白質、0.8份澱粉</p>
+            
+            <div class="toggle-btn" onclick="toggleContent('detail211')">《211飲食原則詳細圖片🍽️》(按三角形點開)</div>
+            <div id="detail211" class="toggle-content">
+                <p>這裡可以放置211飲食原則的詳細圖解。</p>
+                <p>例如：一個餐盤的視覺化比例圖，一半是蔬菜，四分之一是蛋白質，四分之一是全穀澱粉。</p>
+            </div>
+        </div>
+        
+        <div class="category">
+            <h2>空氣炸鍋食譜類</h2>
+            <p>(點三角形展開食譜)</p>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe1')">食譜1：時蔬烤雞胸肉</div>
+            <div id="recipe1" class="toggle-content">
+                <p>空氣炸鍋食譜1的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe2')">食譜2：低脂燒烤</div>
+            <div id="recipe2" class="toggle-content">
+                <p>空氣炸鍋食譜2的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe3')">食譜3：比路邊攤好吃的低脂炸雞</div>
+            <div id="recipe3" class="toggle-content">
+                <p>空氣炸鍋食譜3的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe4')">食譜4：烤高麗菜</div>
+            <div id="recipe4" class="toggle-content">
+                <p>空氣炸鍋食譜4的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe5')">食譜5：無油烤魚</div>
+            <div id="recipe5" class="toggle-content">
+                <p>空氣炸鍋食譜5的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe6')">食譜6：低脂臭豆腐</div>
+            <div id="recipe6" class="toggle-content">
+                <p>空氣炸鍋食譜6的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe7a')">食譜7：芋頭起司餅 (氣炸鍋或烤箱都可以)</div>
+            <div id="recipe7a" class="toggle-content">
+                <p>空氣炸鍋食譜7（芋頭起司餅）的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe7b')">食譜7：蝦扯蛋</div>
+            <div id="recipe7b" class="toggle-content">
+                <p>空氣炸鍋食譜7（蝦扯蛋）的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('recipe8')">食譜8：優格佐雞腿</div>
+            <div id="recipe8" class="toggle-content">
+                <p>空氣炸鍋食譜8的詳細做法將在這裡顯示。</p>
+            </div>
+        </div>
+        
+        <div class="category">
+            <h2>一般鍋子的減脂食譜類</h2>
+            
+            <div class="toggle-btn" onclick="toggleContent('potRecipe1')">食譜1：雞腿悶時蔬</div>
+            <div id="potRecipe1" class="toggle-content">
+                <p>一般鍋子食譜1的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('potRecipe2')">食譜2：杏鮑菇牛肉炒麵</div>
+            <div id="potRecipe2" class="toggle-content">
+                <p>一般鍋子食譜2的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('potRecipe3')">食譜3：生蛋黃拌菜</div>
+            <div id="potRecipe3" class="toggle-content">
+                <p>一般鍋子食譜3的詳細做法將在這裡顯示。</p>
+            </div>
+            
+            <div class="toggle-btn" onclick="toggleContent('potRecipe4')">食譜4：照燒雞排蛋包飯</div>
+            <div id="potRecipe4" class="toggle-content">
+                <p>一般鍋子食譜4的詳細做法將在這裡顯示。</p>
+            </div>
+        </div>
+        
+        <div class="footer-note">
+            <p>※ 此頁面根據提供的 Notion 內容重建，食譜詳細內容需另行補充。</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(id) {
+            const content = document.getElementById(id);
+            const btn = content.previousElementSibling;
+            
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                btn.classList.remove("active");
+            } else {
+                content.style.display = "block";
+                btn.classList.add("active");
+            }
+        }
+        
+        // 可選：頁面加載時展開第一個211飲食原則詳情作為演示
+        document.addEventListener('DOMContentLoaded', function() {
+            // 可以讓某個部分默認展開，例如：
+            // toggleContent('detail211');
+        });
+    </script>
+</body>
+</html>
