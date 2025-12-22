@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>養成易瘦體質的減脂筆記</title>
+    <style>
+        /* 基礎樣式與配色 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #f9f7f0; /* 米白背景，視覺柔和 */
+            color: #333;
+            line-height: 1.7;
+            padding-bottom: 40px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 頁首區塊 */
+        .page-header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); /* 清新綠漸層 */
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .page-header h1 {
+            color: #2d5a3c; /* 深綠色 */
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+        .page-header .subtitle {
+            color: #555;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 核心原則卡片區塊 */
+        .section-title {
+            font-size: 2rem;
+            color: #2d5a3c;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #a8e6cf;
+        }
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .principle-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid #ffaaa5; /* 每張卡片頂部有裝飾色 */
+        }
+        .principle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+        .principle-card h3 {
+            color: #2d5a3c;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .principle-card h3 .emoji {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        .principle-card p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .tip {
+            background-color: #f0f7f4;
+            border-left: 4px solid #6aaf8e;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            border-radius: 0 5px 5px 0;
+            margin-top: 15px;
+        }
+
+        /* 每日清單區塊 */
+        .daily-checklist {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+            margin-bottom: 50px;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        .check-icon {
+            color: #6aaf8e;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .checklist-content h4 {
+            color: #2d5a3c;
+            margin-bottom: 8px;
+        }
+
+        /* 常見迷思區塊 */
+        .myths-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .myth-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+            border-left: 5px solid #ffd3b6; /* 不同顏色的裝飾邊 */
+        }
+        .myth-card h4 {
+            color: #c95c5c; /* 用紅色系突出迷思 */
+            margin-bottom: 10px;
+        }
+
+        /* 頁尾 */
+        .page-footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.95rem;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2.2rem; }
+            .section-title { font-size: 1.7rem; }
+            .principles-grid,
+            .myths-grid { grid-template-columns: 1fr; }
+            .daily-checklist,
+            .principle-card,
+            .myth-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 頁首 -->
+        <header class="page-header">
+            <h1>🍃 養成易瘦體質的減脂筆記</h1>
+            <p class="subtitle">這不是一份嚴苛的節食清單，而是一套可持續的健康生活系統。專注於調整習慣，讓身體自然傾向於保持理想狀態。</p>
+        </header>
+
+        <!-- 核心原則 -->
+        <section>
+            <h2 class="section-title">💎 核心原則</h2>
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <h3><span class="emoji">⚖️</span> 熱量平衡，而非飢餓</h3>
+                    <p>創造適度的熱量赤字（約300-500大卡），重點在於選擇營養密度高的食物，讓身體不感覺匱乏，才能長期堅持。</p>
+                    <div class="tip">💡 技巧：用更大的餐盤裝滿蔬菜，用小一點的餐盤裝主食和蛋白質，視覺上滿足，熱量自然控制。</div>
+                </div>
+                <div class="principle-card">
+                    <h3><span class="emoji">🥗</span> 優質營養優先</h3>
+                    <p>確保攝取足量蛋白質（修復肌肉）、健康脂肪（維持荷爾蒙）與複合碳水化合物（提供穩定能量），這是提升代謝的基礎。</p>
+                    <div class="tip">💡 技巧：遵循「211餐盤法」——每餐2拳蔬菜、1掌蛋白質、1拳複合碳水。</div>
+                </div>
+                <div class="principle-card">
+                    <h3><span class="emoji">💧</span> 水分與睡眠是隱形關鍵</h3>
+                    <p>充足水分幫助代謝與排毒，優質睡眠則穩定瘦素和皮質醇。這兩者做不好，努力事倍功半。</p>
+                    <div class="tip">💡 技巧：早晨起床先喝一杯溫水，睡前1小時遠離手機藍光，建立固定作息。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 每日行動清單 -->
+        <section>
+            <h2 class="section-title">📋 今日健康清單</h2>
+            <div class="daily-checklist">
+                <div class="checklist-item">
+                    <div class="check-icon">☑️</div>
+                    <div class="checklist-content">
+                        <h4>喝足2000c.c.水</h4>
+                        <p>準備一個大水壺，分時段喝完。飯前喝水還能增加飽足感。</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">☑️</div>
+                    <div class="checklist-content">
+                        <h4>攝取30克膳食纖維</h4>
+                        <p>來自足量的蔬菜、水果及全穀物，幫助腸道蠕動與穩定血糖。</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">☑️</div>
+                    <div class="checklist-content">
+                        <h4>進行20分鐘活動</h4>
+                        <p>不一定是劇烈運動，散步、伸展、做家務，讓身體保持活動狀態即可。</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon">☑️</div>
+                    <div class="checklist-content">
+                        <h4>專心吃飯，細嚼慢嚥</h4>
+                        <p>放下手機，每口咀嚼20下以上，給大腦足夠時間接收飽足訊號。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常見迷思破解 -->
+        <section>
+            <h2 class="section-title">🚫 常見迷思破解</h2>
+            <div class="myths-grid">
+                <div class="myth-card">
+                    <h4>迷思：不吃澱粉瘦最快</h4>
+                    <p><strong>真相：</strong>長期缺乏碳水會導致情緒低落、肌肉流失、代謝下降，更容易復胖。應選擇優質複合澱粉。</p>
+                </div>
+                <div class="myth-card">
+                    <h4>迷思：流汗越多代表燃脂越多</h4>
+                    <p><strong>真相：</strong>流汗主要是身體調節溫度，與燃脂效率無直接關係。運動強度和心率才是關鍵指標。</p>
+                </div>
+                <div class="myth-card">
+                    <h4>迷思：局部瘦身可能</h4>
+                    <p><strong>真相：</strong>脂肪是全身性消長的。只能透過全身減脂與特定肌群訓練來改善線條，無法“指哪打哪”。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 頁尾 -->
+        <footer class="page-footer">
+            <p>健康是一輩子的旅程，每天進步一點點。</p>
+            <p>本筆記內容僅供參考，請依據個人身體狀況調整，必要時諮詢專業醫師或營養師。</p>
+        </footer>
+    </div>
+</body>
+</html>
