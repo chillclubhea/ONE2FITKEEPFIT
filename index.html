@@ -62,13 +62,199 @@
             </div>
         </div>
 
-        <!-- 空氣炸鍋食譜區塊 (保持不變) -->
+         <!-- 已更新的「空氣炸鍋食譜類」部分 -->
         <div class="category">
             <h2>🥘 空氣炸鍋食譜類</h2>
             <p>(點三角形展開食譜)</p>
-            <div class="tip-box">此部分包含低卡豆腐雞肉餅、紙包檸檬鮭魚等9道菜，分類清晰，圖文詳解。具體內容同前，此處為節省篇幅已折疊。</div>
-        </div>
-
+            
+            <!-- 子分類：蛋白質主菜 -->
+            <div class="sub-category">
+                <h3>🥩 蛋白質主菜</h3>
+                
+                <!-- 食譜 1: 低卡豆腐雞肉餅 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer1')">食譜1：氣炸低卡豆腐雞肉餅</div>
+                <div id="airfryer1" class="toggle-content">
+                    <img src="https://tokyo-kitchen.icook.network/uploads/recipe/cover/361262/c65d8a60852ec516.jpg" alt="氣炸低卡豆腐雞肉餅" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>雞胸肉 200g</li>
+                            <li>板豆腐 200g</li>
+                            <li>蔥花、鹽、胡椒、少許生抽 適量</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：雞胸肉打成泥，板豆腐壓碎並擠乾水分，混合後加入蔥花、鹽、胡椒、少許生抽（可選）攪拌上勁。</li>
+                            <li><strong>氣炸</strong>：捏成餅狀，放入墊烘焙紙的炸籃，表面可刷薄油。180°C 先烤10分鐘，翻面後再烤5-8分鐘至金黃全熟。</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- 食譜 2: 紙包檸檬鮭魚 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer2')">食譜2：氣炸紙包檸檬鮭魚</div>
+                <div id="airfryer2" class="toggle-content">
+                    <img src="https://img-global.cpcdn.com/recipes/41ccfc9623084125/680x781f0.500982_0.5_1.0q80/%E6%B0%A3%E7%82%B8%E7%B4%99%E5%8C%85%E9%AE%AD%E9%AD%9A%E5%85%8D%E9%96%8B%E7%81%AB-%E9%A3%9F%E8%AD%9C%E6%88%90%E5%93%81%E7%85%A7%E7%89%87.jpg" alt="氣炸紙包檸檬鮭魚" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>鮭魚片 約200g</li>
+                            <li>檸檬 2-3片</li>
+                            <li>黃節瓜等蔬菜 適量</li>
+                            <li>鹽、黑胡椒、黃油或清水 少許</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：鮭魚片用鹽、黑胡椒略醃。烘焙紙上放鮭魚、檸檬片、蔬菜，可加一小塊黃油或一勺水增加濕度。</li>
+                            <li><strong>氣炸</strong>：將紙四角提起像糖果一樣擰緊包牢。180°C 烤15-18分鐘（視厚度）。吃前再打開紙包，防止汁水流失。</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- 食譜 3: 彩椒鑲雞胸肉丁 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer3')">食譜3：彩椒鑲氣炸雞胸肉丁 (替換菜)</div>
+                <div id="airfryer3" class="toggle-content">
+                    <img src="https://tokyo-kitchen.icook.network/uploads/recipe/cover/336503/f2adef73e5818356.jpg" alt="彩椒鑲氣炸雞胸肉丁" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>雞胸肉 150g</li>
+                            <li>彩椒 1個</li>
+                            <li>鹽、蒜粉、黑胡椒、少許料酒、低脂奶酪絲 適量</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：雞胸肉切小丁，用鹽、蒜粉、黑胡椒、少許料酒醃制15分鐘。彩椒對半切開去籽，成「碗」狀。</li>
+                            <li><strong>氣炸</strong>：將雞肉丁填入彩椒中，可撒上少許低脂奶酪絲（可選）。180°C 烤15-20分鐘至雞肉熟透、彩椒邊緣微焦。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div> <!-- 結束蛋白質主菜子分類 -->
+            
+            <!-- 子分類：蔬菜與配菜 -->
+            <div class="sub-category">
+                <h3>🥬 蔬菜與配菜</h3>
+                
+                <!-- 食譜 4: 氣炸脆皮雞蛋豆腐 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer4')">食譜4：氣炸脆皮雞蛋豆腐</div>
+                <div id="airfryer4" class="toggle-content">
+                    <img src="https://d1w7312wesee68.cloudfront.net/YRv9EifnU41HYhqgiF8ixBNbG59Dpcggz-msr0w5NQE/resize:fit:720:720/plain/s3://toasttab/restaurants/restaurant-170053000000000000/menu/items/3/item-900000001374422343_1707349911.jpg" alt="氣炸脆皮雞蛋豆腐" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>雞蛋豆腐 1盒</li>
+                            <li>地瓜粉或玉米澱粉 適量</li>
+                            <li>食用油 (噴霧) 極少量</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：雞蛋豆腐切塊。準備一小盤地瓜粉或玉米澱粉，將豆腐每面輕拍裹上薄粉。</li>
+                            <li><strong>氣炸</strong>：放入炸籃，表面噴極少量油。180°C 烤12-15分鐘，中途翻面一次，至外皮金黃酥脆。</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- 食譜 5: 義式香料綜合菇 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer5')">食譜5：義式香料氣炸綜合菇</div>
+                <div id="airfryer5" class="toggle-content">
+                    <img src="https://scontent-den2-1.xx.fbcdn.net/v/t39.30808-6/492578117_24286464414277711_5336613708533991812_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=qMQRkSwyEtUQ7kNvwERfzEe&_nc_oc=AdlgnCyHYZijpDRS8s3JEyEySnmLwNZT757Gtb_UEU48DGioOKq0wXbwusFKIw9VRM8&_nc_zt=23&_nc_ht=scontent-den2-1.xx&_nc_gid=HjNZy6OIhWLkxdOa9EAI7w&oh=00_AflImpb04-H5NTeUcOBaeN11md5GGH1mAQT1KAAku2Kptg&oe=694E0940" alt="義式香料氣炸綜合菇" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>綜合菇類 (杏鮑菇、鮮香菇等) 共300g</li>
+                            <li>橄欖油 1小勺</li>
+                            <li>鹽、黑胡椒、義式混合香料 適量</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：杏鮑菇、鮮香菇等洗淨擦乾後切滾刀塊。加橄欖油、鹽、黑胡椒和義式混合香料拌勻。</li>
+                            <li><strong>氣炸</strong>：平鋪入炸籃。180°C 烤15-18分鐘，中途搖晃翻動一次。</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- 食譜 6: 咖哩花椰菜 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer6')">食譜6：咖哩海鮮花椰菜</div>
+                <div id="airfryer6" class="toggle-content">
+                    <img src="https://img.cook1cook.com/upload/cover/201801/0/475275a5d49a8b370c0.jpg" alt="咖哩海鮮花椰菜" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>白花椰菜 300g</li>
+                            <li>咖哩粉 1-2小勺</li>
+                            <li>鹽、食用油、麵粉 少許</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：白花椰菜切小朵，加咖哩粉、鹽、少量油（約半小勺）充分抓勻。為求更酥脆，可撒一茶匙麵粉幫助附著。</li>
+                            <li><strong>氣炸</strong>：平鋪。190°C 烤10-12分鐘，至邊緣焦黃。</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- 食譜 7: 孜然杏鮑菇條 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer7')">食譜7：孜然氣炸杏鮑菇（條狀） (替換菜)</div>
+                <div id="airfryer7" class="toggle-content">
+                    <img src="https://cdn.hk01.com/di/media/images/dw/20210409/457269900092641280659872.jpeg/M_6Qjymo2uEi8zu28_9rBIWgBpJ5JIJDQxuMc3kbjHM?v=w1920" alt="孜然氣炸杏鮑菇" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>杏鮑菇 200g</li>
+                            <li>食用油 半小勺</li>
+                            <li>孜然粉 1小勺、辣椒粉、鹽 少許</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：杏鮑菇洗淨，順紋理撕成粗條。加油、孜然粉、少許辣椒粉和鹽抓勻。</li>
+                            <li><strong>氣炸</strong>：平鋪。200°C 烤12-15分鐘，中途翻拌，烤至水分收乾、邊緣微焦即可。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div> <!-- 結束蔬菜與配菜子分類 -->
+            
+            <!-- 子分類：主食與點心 -->
+            <div class="sub-category">
+                <h3>🍚 主食與點心</h3>
+                
+                <!-- 食譜 8: 減醣豆包什蔬捲 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer8')">食譜8：減醣氣炸豆包什蔬捲 (替換菜)</div>
+                <div id="airfryer8" class="toggle-content">
+                    <img src="https://keepingfitchef.com/admin/image/draw/file_browser/133/" alt="減醣氣炸豆包什蔬捲" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>生豆包（或千張） 數張</li>
+                            <li>海苔、彩椒條、小黃瓜條、蘆筍 適量</li>
+                            <li>調味粉、水或澱粉水 少許</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：生豆包展開。鋪上半片海苔，放上彩椒條、小黃瓜條、焯過水的蘆筍等，緊密捲起。收口處可抹少許水或澱粉水黏合。</li>
+                            <li><strong>氣炸</strong>：收口朝下放入炸籃，表面噴薄油。200°C 烤10-12分鐘，至豆皮呈金黃色。出鍋後切段，撒上調味粉。</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- 食譜 9: 氣炸南瓜塊 -->
+                <div class="toggle-btn" onclick="toggleContent('airfryer9')">食譜9：氣炸南瓜塊</div>
+                <div id="airfryer9" class="toggle-content">
+                    <img src="https://imgproxy.icook.network/safe/rt:fit/w:1200/el:0/q:80/plain/http://tokyo-kitchen.icook.tw.s3.amazonaws.com/uploads/recipe/cover/481043/79a51ed21f2e3869.jpg" alt="氣炸南瓜塊" class="recipe-img">
+                    <div class="recipe-details">
+                        <h4>📝 準備食材</h4>
+                        <ul>
+                            <li>帶皮南瓜 300g</li>
+                            <li>食用油 半小勺</li>
+                            <li>鹽、黑胡椒或肉桂粉 適量</li>
+                        </ul>
+                        <h4>👨‍🍳 料理步驟</h4>
+                        <ol>
+                            <li><strong>準備</strong>：帶皮南瓜切2釐米見方塊。加油、鹽、黑胡椒或肉桂粉（可選）拌勻。</li>
+                            <li><strong>氣炸</strong>：平鋪在墊紙的炸籃。180°C 烤18-22分鐘，中途翻動，烤至叉子可輕鬆插入。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div> <!-- 結束主食與點心子分類 -->
+            
+        </div> <!-- 結束空氣炸鍋食譜大類 -->
         <!-- 已更新的「一般鍋子的減脂食譜類」 -->
         <div class="category">
             <h2>🍳 一般鍋子的減脂食譜類</h2>
