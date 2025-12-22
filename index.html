@@ -41,40 +41,56 @@
         .recipe-details li { margin-bottom: 8px; }
         .footer-note { text-align: center; margin-top: 30px; color: #7f8c8d; font-size: 0.9em; padding-top: 15px; border-top: 1px solid #eee; }
         .tip-box { background-color: #e8f6f3; border-left: 4px solid #1abc9c; padding: 12px 15px; margin: 15px 0; border-radius: 0 6px 6px 0; font-size: 0.95em; }
+        .supabase-notice {
+            background-color: #eef7ff;
+            border-left: 4px solid #3b82f6;
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9em;
+            color: #1e40af;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1><span class="emoji">🍖</span> 減脂食譜大全 (點三角形展開食譜)</h1>
+        
         <div class="note">
             <p>（會不定期更新）</p>
             <p>食譜很豐富！另外一定要了解《外食飲食原則》，就算不想煮，外食也可以吃瘦！</p>
+            <div class="supabase-notice">
+                ✅ <strong>圖片已儲存在 Supabase</strong>：所有圖片使用 Supabase Storage 託管，永久可用！
+                <br><small>請將 <code>[sdloakutxcsbshcqpxwn]</code> 替換為您的 Supabase 專案 ID</small>
+            </div>
         </div>
+        
         <div class="important">
             <h3>💡必看！211飲食原則：</h3>
             <p>餐食的部分搭配211飲食可以讓瘦身效果達到最好 每餐 <strong>2份蔬果 + 1份蛋白質 + 1份澱粉</strong>，並且選擇原型食物</p>
             <p>食物份量的計算：<strong>1份是你自己的一個拳頭大小👊🏽</strong></p>
             <p>並且以七分飽為主，若吃211會太飽，可以等比例減少，例如：1.5份蔬菜、0.8份蛋白質、0.8份澱粉</p>
+            
             <div class="toggle-btn" onclick="toggleContent('detail211')">《211飲食原則詳細圖片🍽️》(按三角形點開)</div>
             <div id="detail211" class="toggle-content">
                 <p>這裡可以放置211飲食原則的詳細圖解。</p>
                 <p>例如：一個餐盤的視覺化比例圖，一半是蔬菜，四分之一是蛋白質，四分之一是全穀澱粉。</p>
             </div>
         </div>
-
-         <!-- 已更新的「空氣炸鍋食譜類」部分 -->
+        
+        <!-- 🥘 空氣炸鍋食譜類 -->
         <div class="category">
-            <h2>🥘 空氣炸鍋食譜類</h2>
+            <h2>🥘 空氣炸鍋食譜類 (9道)</h2>
             <p>(點三角形展開食譜)</p>
             
-            <!-- 子分類：蛋白質主菜 -->
+            <!-- 🥩 蛋白質主菜 -->
             <div class="sub-category">
                 <h3>🥩 蛋白質主菜</h3>
                 
                 <!-- 食譜 1: 低卡豆腐雞肉餅 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer1')">食譜1：氣炸低卡豆腐雞肉餅</div>
                 <div id="airfryer1" class="toggle-content">
-                    <img src="https://tokyo-kitchen.icook.network/uploads/recipe/cover/361262/c65d8a60852ec516.jpg" alt="氣炸低卡豆腐雞肉餅" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/01_airfryer_tofu_chicken_patty.jpg" alt="氣炸低卡豆腐雞肉餅" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -93,7 +109,7 @@
                 <!-- 食譜 2: 紙包檸檬鮭魚 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer2')">食譜2：氣炸紙包檸檬鮭魚</div>
                 <div id="airfryer2" class="toggle-content">
-                    <img src="https://img-global.cpcdn.com/recipes/41ccfc9623084125/680x781f0.500982_0.5_1.0q80/%E6%B0%A3%E7%82%B8%E7%B4%99%E5%8C%85%E9%AE%AD%E9%AD%9A%E5%85%8D%E9%96%8B%E7%81%AB-%E9%A3%9F%E8%AD%9C%E6%88%90%E5%93%81%E7%85%A7%E7%89%87.jpg" alt="氣炸紙包檸檬鮭魚" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/02_airfryer_lemon_salmon.webp" alt="氣炸紙包檸檬鮭魚" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -113,7 +129,7 @@
                 <!-- 食譜 3: 彩椒鑲雞胸肉丁 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer3')">食譜3：彩椒鑲氣炸雞胸肉丁 (替換菜)</div>
                 <div id="airfryer3" class="toggle-content">
-                    <img src="https://tokyo-kitchen.icook.network/uploads/recipe/cover/336503/f2adef73e5818356.jpg" alt="彩椒鑲氣炸雞胸肉丁" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/03_airfryer_bell_pepper_chicken.webp" alt="彩椒鑲氣炸雞胸肉丁" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -126,18 +142,19 @@
                             <li><strong>準備</strong>：雞胸肉切小丁，用鹽、蒜粉、黑胡椒、少許料酒醃制15分鐘。彩椒對半切開去籽，成「碗」狀。</li>
                             <li><strong>氣炸</strong>：將雞肉丁填入彩椒中，可撒上少許低脂奶酪絲（可選）。180°C 烤15-20分鐘至雞肉熟透、彩椒邊緣微焦。</li>
                         </ol>
+                        <p class="tip-box">😋 烤彩椒雞胸肉，這個做法一點都不柴，鮮嫩多汁，減脂期大口炫！</p>
                     </div>
                 </div>
             </div> <!-- 結束蛋白質主菜子分類 -->
             
-            <!-- 子分類：蔬菜與配菜 -->
+            <!-- 🥬 蔬菜與配菜 -->
             <div class="sub-category">
                 <h3>🥬 蔬菜與配菜</h3>
                 
                 <!-- 食譜 4: 氣炸脆皮雞蛋豆腐 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer4')">食譜4：氣炸脆皮雞蛋豆腐</div>
                 <div id="airfryer4" class="toggle-content">
-                    <img src="https://d1w7312wesee68.cloudfront.net/YRv9EifnU41HYhqgiF8ixBNbG59Dpcggz-msr0w5NQE/resize:fit:720:720/plain/s3://toasttab/restaurants/restaurant-170053000000000000/menu/items/3/item-900000001374422343_1707349911.jpg" alt="氣炸脆皮雞蛋豆腐" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/04_airfryer_crispy_egg_tofu.jpg" alt="氣炸脆皮雞蛋豆腐" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -156,7 +173,7 @@
                 <!-- 食譜 5: 義式香料綜合菇 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer5')">食譜5：義式香料氣炸綜合菇</div>
                 <div id="airfryer5" class="toggle-content">
-                    <img src="https://scontent-den2-1.xx.fbcdn.net/v/t39.30808-6/492578117_24286464414277711_5336613708533991812_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=qMQRkSwyEtUQ7kNvwERfzEe&_nc_oc=AdlgnCyHYZijpDRS8s3JEyEySnmLwNZT757Gtb_UEU48DGioOKq0wXbwusFKIw9VRM8&_nc_zt=23&_nc_ht=scontent-den2-1.xx&_nc_gid=HjNZy6OIhWLkxdOa9EAI7w&oh=00_AflImpb04-H5NTeUcOBaeN11md5GGH1mAQT1KAAku2Kptg&oe=694E0940" alt="義式香料氣炸綜合菇" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/05_airfryer_italian_mushroom.jpg" alt="義式香料氣炸綜合菇" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -175,7 +192,7 @@
                 <!-- 食譜 6: 咖哩花椰菜 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer6')">食譜6：咖哩海鮮花椰菜</div>
                 <div id="airfryer6" class="toggle-content">
-                    <img src="https://img.cook1cook.com/upload/cover/201801/0/475275a5d49a8b370c0.jpg" alt="咖哩海鮮花椰菜" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/06_airfryer_curry_cauliflower.jpg" alt="咖哩海鮮花椰菜" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -194,7 +211,7 @@
                 <!-- 食譜 7: 孜然杏鮑菇條 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer7')">食譜7：孜然氣炸杏鮑菇（條狀） (替換菜)</div>
                 <div id="airfryer7" class="toggle-content">
-                    <img src="https://cdn.hk01.com/di/media/images/dw/20210409/457269900092641280659872.jpeg/M_6Qjymo2uEi8zu28_9rBIWgBpJ5JIJDQxuMc3kbjHM?v=w1920" alt="孜然氣炸杏鮑菇" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/07_airfryer_cumin_mushroom.jpg" alt="孜然氣炸杏鮑菇" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -211,14 +228,14 @@
                 </div>
             </div> <!-- 結束蔬菜與配菜子分類 -->
             
-            <!-- 子分類：主食與點心 -->
+            <!-- 🍚 主食與點心 -->
             <div class="sub-category">
                 <h3>🍚 主食與點心</h3>
                 
                 <!-- 食譜 8: 減醣豆包什蔬捲 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer8')">食譜8：減醣氣炸豆包什蔬捲 (替換菜)</div>
                 <div id="airfryer8" class="toggle-content">
-                    <img src="https://keepingfitchef.com/admin/image/draw/file_browser/133/" alt="減醣氣炸豆包什蔬捲" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/08_airfryer_tofu_veggie_roll.jpg" alt="減醣氣炸豆包什蔬捲" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -237,7 +254,7 @@
                 <!-- 食譜 9: 氣炸南瓜塊 -->
                 <div class="toggle-btn" onclick="toggleContent('airfryer9')">食譜9：氣炸南瓜塊</div>
                 <div id="airfryer9" class="toggle-content">
-                    <img src="https://imgproxy.icook.network/safe/rt:fit/w:1200/el:0/q:80/plain/http://tokyo-kitchen.icook.tw.s3.amazonaws.com/uploads/recipe/cover/481043/79a51ed21f2e3869.jpg" alt="氣炸南瓜塊" class="recipe-img">
+                    <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/09_airfryer_pumpkin.jpg" alt="氣炸南瓜塊" class="recipe-img">
                     <div class="recipe-details">
                         <h4>📝 準備食材</h4>
                         <ul>
@@ -253,17 +270,17 @@
                     </div>
                 </div>
             </div> <!-- 結束主食與點心子分類 -->
-            
         </div> <!-- 結束空氣炸鍋食譜大類 -->
-        <!-- 已更新的「一般鍋子的減脂食譜類」 -->
+        
+        <!-- 🍳 一般鍋子食譜區塊 -->
         <div class="category">
-            <h2>🍳 一般鍋子的減脂食譜類</h2>
+            <h2>🍳 一般鍋子的減脂食譜類 (8道)</h2>
             <p>(點三角形展開詳細食譜與步驟)</p>
 
             <!-- 食譜1：無米花椰菜蝦仁炒飯 -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe1')">食譜1：無米花椰菜蝦仁炒飯</div>
             <div id="potRecipe1" class="toggle-content">
-                <img src="https://cdn-next.cybassets.com/media/W1siZiIsIjEzOTg4L3Byb2R1Y3RzLzU1MjE0NTI2LzE3NTczMDg3MTVfYmQ3YjdmN2QwMGNlMTRmMWFkMTAuanBlZyJdLFsicCIsInRodW1iIiwiNDgweDQ4MCJdXQ.jpeg?sha=ea5b393532bf2537" alt="無米花椰菜蝦仁炒飯" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/10_cauliflower_fried_rice.avif" alt="無米花椰菜蝦仁炒飯" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
@@ -285,7 +302,7 @@
             <!-- 食譜2：香煎味噌豆腐排 -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe2')">食譜2：香煎味噌豆腐排</div>
             <div id="potRecipe2" class="toggle-content">
-                <img src="https://imgproxy.icook.network/safe/rt:fit/w:1200/el:0/q:80/plain/http://tokyo-kitchen.icook.tw.s3.amazonaws.com/uploads/step/cover/1200877/fa84db06f5049ecb.jpg" alt="香煎味噌豆腐排" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/11_miso_tofu_steak.jpg" alt="香煎味噌豆腐排" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
@@ -307,7 +324,7 @@
             <!-- 食譜3：清燉番茄洋蔥牛肉湯 -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe3')">食譜3：清燉番茄洋蔥牛肉湯</div>
             <div id="potRecipe3" class="toggle-content">
-                <img src="https://imgproxy.icook.network/safe/rt:fit/w:1200/el:0/q:80/plain/http://tokyo-kitchen.icook.tw.s3.amazonaws.com/uploads/recipe/cover/429082/62429471f4d5b5bd.jpg" alt="清燉番茄洋蔥牛肉湯" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/12_tomato_beef_soup.jpg" alt="清燉番茄洋蔥牛肉湯" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
@@ -329,7 +346,7 @@
             <!-- 食譜4：日式酒蒸蛤蜊嫩雞 -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe4')">食譜4：日式酒蒸蛤蜊嫩雞</div>
             <div id="potRecipe4" class="toggle-content">
-                <img src="https://tokyo-kitchen.icook.network/uploads/recipe/cover/344513/9e461c32994f218f.jpg" alt="日式酒蒸蛤蜊嫩雞" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/13_sake_steamed_clam_chicken.jpg" alt="日式酒蒸蛤蜊嫩雞" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
@@ -351,19 +368,19 @@
             <!-- 食譜5：台式蒜泥白肉 (低脂版) -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe5')">食譜5：台式蒜泥白肉 (低脂版)</div>
             <div id="potRecipe5" class="toggle-content">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5pg85zMVsCTbyf04Z1F-hcpvusfESpQqBb7DDSwE9W2oYGA-k" alt="台式蒜泥白肉 (低脂版)" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/14_taiwanese_garlic_pork.jpg" alt="台式蒜泥白肉 (低脂版)" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
                         <td>豬里肌肉片200g、小黃瓜絲、薑絲、蒜末3瓣、薄鹽醬油2大匙、烏醋/香油少許</td>
                         <td>1. 豬里肌肉片滾水下鍋，熄火加蓋燜泡5-7分鐘至熟。<br>2. 取出泡冰水使肉質緊實，瀝乾切片。<br>3. 調合蒜泥醬汁，與肉片、黃瓜絲、薑絲拌勻。</td>
-                        <td>用“燜泡”而非久煮，是瘦肉不柴的秘訣；醬汁薄鹽，依喜好可加檸檬汁替代部分醬油。</td>
+                        <td>用"燜泡"而非久煮，是瘦肉不柴的秘訣；醬汁薄鹽，依喜好可加檸檬汁替代部分醬油。</td>
                     </tr>
                 </table>
                 <div class="recipe-details">
                     <h4>📝 詳細步驟與技巧</h4>
                     <ol>
-                        <li><strong>燜泡豬肉</strong>：燒一大鍋水，水滾後放入豬里肌肉片，立刻關火，蓋上鍋蓋，利用餘溫將肉“燜泡”5-7分鐘至全熟。這是讓瘦肉保持軟嫩的關鍵。</li>
+                        <li><strong>燜泡豬肉</strong>：燒一大鍋水，水滾後放入豬里肌肉片，立刻關火，蓋上鍋蓋，利用餘溫將肉"燜泡"5-7分鐘至全熟。這是讓瘦肉保持軟嫩的關鍵。</li>
                         <li><strong>冰鎮切片</strong>：將燜熟的肉片迅速撈出，放入冰水中冰鎮，讓肉質收縮變緊實。瀝乾後，逆著紋理切成薄片。</li>
                         <li><strong>調製醬汁與組合</strong>：將蒜末、薄鹽醬油、少許烏醋和幾滴香油混合成醬汁。盤底鋪上小黃瓜絲和薑絲，擺上肉片，淋上醬汁或蘸食即可。</li>
                     </ol>
@@ -373,7 +390,7 @@
             <!-- 食譜6：韓式泡菜豆腐鍋 -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe6')">食譜6：韓式泡菜豆腐鍋</div>
             <div id="potRecipe6" class="toggle-content">
-                <img src="https://d3l76hx23vw40a.cloudfront.net/recipe/gy50-062.jpg" alt="韓式泡菜豆腐鍋" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/15_kimchi_tofu_stew.jpg" alt="韓式泡菜豆腐鍋" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
@@ -395,7 +412,7 @@
             <!-- 食譜7：黑胡椒香煎杏鮑菇雞丁 -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe7')">食譜7：黑胡椒香煎杏鮑菇雞丁</div>
             <div id="potRecipe7" class="toggle-content">
-                <img src="https://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20190117/cbb0c896e162448ea7754273fb4042a1.jpeg" alt="黑胡椒香煎杏鮑菇雞丁" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/16_black_pepper_mushroom_chicken.jpg" alt="黑胡椒香煎杏鮑菇雞丁" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
@@ -417,7 +434,7 @@
             <!-- 食譜8：低卡櫛瓜烘蛋 -->
             <div class="toggle-btn" onclick="toggleContent('potRecipe8')">食譜8：低卡櫛瓜烘蛋</div>
             <div id="potRecipe8" class="toggle-content">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKBbxxom2yRcCK8TCimq7YBPmoVAMEJ79Wag&s" alt="低卡櫛瓜烘蛋" class="recipe-img">
+                <img src="https://sdloakutxcsbshcqpxwn.supabase.co/storage/v1/object/public/recipe-images/17_zucchini_omelette.jpg" alt="低卡櫛瓜烘蛋" class="recipe-img">
                 <table class="recipe-table">
                     <tr><th>主要材料 (約2人份)</th><th>核心步驟</th><th>減脂關鍵技巧</th></tr>
                     <tr>
@@ -435,11 +452,11 @@
                     </ol>
                 </div>
             </div>
-
         </div> <!-- 結束一般鍋子食譜大類 -->
 
         <div class="footer-note">
             <p>※ 此頁面為完整減脂食譜大全，包含空氣炸鍋與一般鍋具料理，均配有詳細步驟與減脂技巧。</p>
+            <p>※ 圖片儲存於 Supabase Storage，請將 <code>sdloakutxcsbshcqpxwn</code> 替換為您的實際專案 ID</p>
         </div>
     </div>
 
