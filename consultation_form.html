@@ -599,6 +599,23 @@
     </div>
 
     <script>
+        // 將以下測試代碼添加到您的 script 中進行測試
+function testEmailJS() {
+    emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        {
+            to_name: "測試用戶",
+            to_email: "your-test-email@example.com", // 替換為測試郵箱
+            message: "這是一個測試郵件"
+        }
+    ).then(
+        response => console.log('測試成功:', response),
+        error => console.log('測試失敗:', error)
+    );
+}
+
+// 在控制台執行 testEmailJS() 進行測試
         // ============================================
         // EmailJS 配置 - 使用您提供的憑證
         // ============================================
