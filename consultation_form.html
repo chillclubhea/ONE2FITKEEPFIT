@@ -702,13 +702,17 @@
                 // 準備模板參數
                 const templateParams = {
                     to_name: formData.name,
-                    appointment_id: appointment_id,
-                    appointment_date: formData.selectedTimeSlot ? formData.selectedTimeSlot.date : formattedDateString,appointment_time: formData.selectedTimeSlot ? formData.selectedTimeSlot.time : '待確認',
-                    contact: formData.contact,
-                    motivation: formData.motivation ? formData.motivation.substring(0, 100) + (formData.motivation.length > 100 ? '...' : '') : '未提供',
-                    bmi: bmi,
-                    current_year: new Date().getFullYear().toString()
-                };
+                // 以下是关键修复：添加 to_email 字段
+                to_email: formData.email, // 确保 formData.email 是您从表单中获取的邮箱地址
+                // 以下是您的其他模板变量（请保持与模板中的变量名完全一致）
+                appointment_id: appointmentId,
+                appointment_date: formData.selectedTimeSlot ? formData.selectedTimeSlot.date : '待確認',
+                appointment_time: formData.selectedTimeSlot ? formData.selectedTimeSlot.time : '待確認',
+                contact: formData.contact,
+                motivation: formData.motivation ? formData.motivation.substring(0, 100) + (formData.motivation.length > 100 ? '...' : '') : '未提供',
+                bmi: bmi,
+                current_year: new Date().getFullYear().toString()
+};
                 
                 console.log('郵件參數:', templateParams);
                 
@@ -876,7 +880,19 @@
             
             document.getElementById('appointmentDetails').innerHTML = detailsHTML;
         }
-
+        async function sendConfirmationEmail(formData, appointmentId) {
+    // 检查邮箱是否为空
+    if (!formData.email || formData.email.trim() === '') {
+        console.error('錯誤：收件人電子郵件地址為空');
+        return {
+            success: false,
+            message: '請提供有效的電子郵件地址'
+        };
+    }
+    
+    // ... 其余的代码（计算BMI、准备templateParams等）
+    // 确保templateParams中包含 to_email: formData.email
+}
         // 處理表單提交
         async function handleFormSubmit() {
             // 收集表單數據
