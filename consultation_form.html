@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>放縱減肥一對一諮詢預約</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <!-- 只需要一個 EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
+        /* CSS 保持不變，這裡省略以節省空間 */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -597,39 +599,201 @@
     </div>
 
     <script>
-        // 初始化 EmailJS (需要註冊並獲取自己的USER_ID)
-        // 前往 https://www.emailjs.com/ 註冊免費帳戶
+        // ============================================
+        // EmailJS 配置 - 使用您提供的憑證
+        // ============================================
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: 't7Qdr66KKPecj63b3',      // 您的 Public Key
+            SERVICE_ID: 'service_00tszor',        // 您的 Service ID
+            TEMPLATE_ID: 'template_sa6vpqu'       // 您的 Template ID
+        };
+
+        // 初始化 EmailJS
         (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // 替換為您的EmailJS公鑰
+            emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+            console.log('EmailJS 初始化完成');
         })();
-        
-        // 表單狀態管理
+
+        // ============================================
+        // 全局變數
+        // ============================================
         let currentStep = 1;
         const totalSteps = 6;
         let formData = {
-            selectedTimeSlot: null,
-            appointmentId: generateAppointmentId()
+            selectedTimeSlot: null
         };
-        
+
+        // ============================================
+        // 核心功能函數
+        // ============================================
+
         // 生成預約ID
         function generateAppointmentId() {
-            return 'APT-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            const date = new Date();
+            const year = date.getFullYear().toString().slice(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            
+            return `APT${year}${month}${day}${random}`;
         }
-        
+
+        // 計算 BMI
+        function calculateBMI(height, weight) {
+            if (!height || !weight) return '未提供';
+            
+            const heightM = height / 100;
+            const bmi = (weight / (heightM * heightM)).toFixed(1);
+            
+            let status = '';
+            if (bmi < 18.5) status = ' (過輕)';
+            else if (bmi < 24) status = ' (正常)';
+            else if (bmi < 27) status = ' (過重)';
+            else if (bmi < 30) status = ' (輕度肥胖)';
+            else if (bmi < 35) status = ' (中度肥胖)';
+            else status = ' (重度肥胖)';
+            
+            return bmi + status;
+        }
+
+        // 收集表單數據
+        function collectFormData() {
+            return {
+                // 基本資料
+                name: document.getElementById('name').value,
+                gender: document.querySelector('input[name="gender"]:checked')?.value,
+                age: document.getElementById('age').value,
+                
+                // 身體數據
+                height: document.getElementById('height').value,
+                currentWeight: document.getElementById('currentWeight').value,
+                targetWeight: document.getElementById('targetWeight').value,
+                
+                // 生活習慣
+                occupation: document.getElementById('occupation').value,
+                diet: Array.from(document.querySelectorAll('input[name="diet"]:checked')).map(cb => cb.value),
+                exercise: document.querySelector('input[name="exercise"]:checked')?.value,
+                
+                // 減肥心態
+                motivation: document.getElementById('motivation').value,
+                motivationLevel: document.getElementById('motivationLevel').value,
+                
+                // 聯繫資料
+                failure: document.querySelector('input[name="failure"]:checked')?.value,
+                investment: document.querySelector('input[name="investment"]:checked')?.value,
+                follow: document.querySelector('input[name="follow"]:checked')?.value || '剛看到',
+                contact: document.getElementById('contact').value,
+                email: document.getElementById('email').value,
+                supplement: document.getElementById('supplement').value,
+                
+                // 預約時間
+                selectedTimeSlot: formData.selectedTimeSlot
+            };
+        }
+
+        // 發送確認郵件
+        async function sendConfirmationEmail(formData, appointmentId) {
+            try {
+                console.log('開始發送確認郵件...');
+                
+                // 計算 BMI
+                const bmi = calculateBMI(formData.height, formData.currentWeight);
+                
+                // 準備模板參數
+                const templateParams = {
+                    to_name: formData.name,
+                    appointment_id: appointmentId,
+                    appointment_date: formData.selectedTimeSlot ? 
+                        formData.selectedTimeSlot.date : 
+                        new Date().toLocaleDateString('zh-TW', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric',
+                            weekday: 'long'
+                        }),
+                    appointment_time: formData.selectedTimeSlot ? 
+                        formData.selectedTimeSlot.time : 
+                        '待確認',
+                    contact: formData.contact,
+                    motivation: formData.motivation ? 
+                        formData.motivation.substring(0, 100) + 
+                        (formData.motivation.length > 100 ? '...' : '') : 
+                        '未提供',
+                    bmi: bmi,
+                    current_year: new Date().getFullYear().toString(),
+                    to_email: formData.email
+                };
+                
+                console.log('郵件參數:', templateParams);
+                
+                // 發送郵件
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('郵件發送成功:', response);
+                
+                return {
+                    success: true,
+                    message: '確認郵件已成功發送',
+                    status: response.status,
+                    text: response.text
+                };
+                
+            } catch (error) {
+                console.error('郵件發送失敗:', error);
+                
+                return {
+                    success: false,
+                    message: '郵件發送失敗',
+                    error: {
+                        code: error.code,
+                        text: error.text,
+                        message: error.message
+                    }
+                };
+            }
+        }
+
+        // 保存到本地存儲
+        function saveToLocalStorage(formData, appointmentId, emailSent) {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            
+            const appointment = {
+                id: appointmentId,
+                timestamp: new Date().toISOString(),
+                ...formData,
+                emailSent: emailSent,
+                status: 'pending',
+                bmi: calculateBMI(formData.height, formData.currentWeight)
+            };
+            
+            appointments.push(appointment);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            
+            console.log('預約已保存到本地存儲:', appointment);
+            return appointment;
+        }
+
+        // ============================================
+        // 表單處理函數
+        // ============================================
+
         // 初始化時間段
         function initTimeSlots() {
             const timeSlotsContainer = document.getElementById('timeSlots');
             timeSlotsContainer.innerHTML = '';
             
-            // 生成未來7天的時間段
             const timeSlots = [];
             const now = new Date();
             
+            // 生成未來7天的時間段
             for (let i = 1; i <= 7; i++) {
                 const date = new Date();
                 date.setDate(now.getDate() + i);
                 
-                // 每天3個時間段
                 const times = ['09:00-10:00', '14:00-15:00', '19:00-20:00'];
                 
                 times.forEach(time => {
@@ -657,7 +821,7 @@
                 });
             }
         }
-        
+
         // 選擇時間段
         function selectTimeSlot(element) {
             if (element.dataset.available === 'false') return;
@@ -680,19 +844,90 @@
             // 啟用下一步按鈕
             document.getElementById('nextBtn').disabled = false;
         }
-        
-        // 更新進度條
-        function updateProgressBar() {
-            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            document.getElementById('progressFill').style.width = `${progress}%`;
+
+        // 顯示成功訊息
+        function showSuccessMessage(formData, appointmentId, emailResult) {
+            const detailsHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">預約編號</div>
+                    <div class="detail-value">${appointmentId}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">姓名</div>
+                    <div class="detail-value">${formData.name}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">聯絡方式</div>
+                    <div class="detail-value">${formData.contact}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">電子郵件</div>
+                    <div class="detail-value">${formData.email}</div>
+                </div>
+                ${formData.selectedTimeSlot ? `
+                <div class="detail-row">
+                    <div class="detail-label">預約時間</div>
+                    <div class="detail-value">${formData.selectedTimeSlot.date} ${formData.selectedTimeSlot.time}</div>
+                </div>
+                ` : ''}
+                <div class="detail-row">
+                    <div class="detail-label">BMI 指數</div>
+                    <div class="detail-value">${calculateBMI(formData.height, formData.currentWeight)}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">減肥決心</div>
+                    <div class="detail-value">${formData.motivationLevel}/10</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">郵件狀態</div>
+                    <div class="detail-value">
+                        ${emailResult.success ? 
+                            '<span style="color: #2e7d5d;"><i class="fas fa-check-circle"></i> 確認郵件已發送</span>' : 
+                            '<span style="color: #e74c3c;"><i class="fas fa-exclamation-triangle"></i> 郵件發送失敗，請檢查郵件地址</span>'}
+                    </div>
+                </div>
+            `;
             
-            // 更新步驟指示器
-            document.querySelectorAll('.step').forEach(step => {
-                const stepNum = parseInt(step.dataset.step);
-                step.classList.toggle('active', stepNum === currentStep);
-            });
+            document.getElementById('appointmentDetails').innerHTML = detailsHTML;
         }
-        
+
+        // 處理表單提交
+        async function handleFormSubmit() {
+            // 收集表單數據
+            const collectedData = collectFormData();
+            const appointmentId = generateAppointmentId();
+            
+            // 顯示加載中
+            const submitBtn = document.getElementById('nextBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+            submitBtn.disabled = true;
+            
+            try {
+                // 1. 發送確認郵件
+                const emailResult = await sendConfirmationEmail(collectedData, appointmentId);
+                
+                // 2. 保存到本地存儲
+                const savedAppointment = saveToLocalStorage(collectedData, appointmentId, emailResult.success);
+                
+                // 3. 顯示成功訊息
+                showSuccessMessage(collectedData, appointmentId, emailResult);
+                
+                // 4. 跳轉到成功頁面
+                goToStep(6);
+                
+            } catch (error) {
+                console.error('提交失敗:', error);
+                alert('提交過程中發生錯誤，請稍後再試。');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // 表單導航與驗證
+        // ============================================
+
         // 切換步驟
         function goToStep(step) {
             // 隱藏所有步驟
@@ -710,121 +945,51 @@
             updateProgressBar();
             
             // 更新導航按鈕狀態
-            document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'flex';
-            
-            if (step === totalSteps) {
-                document.getElementById('formNavigation').style.display = 'none';
-                showConfirmation();
-            } else {
-                document.getElementById('formNavigation').style.display = 'flex';
-                document.getElementById('nextBtn').innerHTML = step === totalSteps - 1 
-                    ? '提交預約 <i class="fas fa-paper-plane"></i>' 
-                    : '下一步 <i class="fas fa-arrow-right"></i>';
-            }
+            updateNavigationButtons();
             
             // 如果是步驟4，初始化時間段
             if (step === 4) {
                 initTimeSlots();
+                document.getElementById('nextBtn').disabled = true; // 需要選擇時間段才能繼續
             }
         }
-        
-        // 顯示確認頁面
-        function showConfirmation() {
-            // 收集所有表單數據
-            const form = document.getElementById('consultationForm');
-            const formElements = form.elements;
+
+        // 更新進度條
+        function updateProgressBar() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
             
-            let detailsHTML = '';
-            for (let element of formElements) {
-                if (element.type === 'radio' || element.type === 'checkbox') {
-                    if (element.checked) {
-                        detailsHTML += `
-                            <div class="detail-row">
-                                <div class="detail-label">${element.name}:</div>
-                                <div class="detail-value">${element.value}</div>
-                            </div>
-                        `;
-                    }
-                } else if (element.name && element.value && element.type !== 'button') {
-                    detailsHTML += `
-                        <div class="detail-row">
-                            <div class="detail-label">${element.name}:</div>
-                            <div class="detail-value">${element.value}</div>
-                        </div>
-                    `;
+            // 更新步驟指示器
+            document.querySelectorAll('.step').forEach(step => {
+                const stepNum = parseInt(step.dataset.step);
+                step.classList.toggle('active', stepNum === currentStep);
+            });
+        }
+
+        // 更新導航按鈕
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'flex';
+            
+            if (currentStep === totalSteps) {
+                document.getElementById('formNavigation').style.display = 'none';
+            } else {
+                document.getElementById('formNavigation').style.display = 'flex';
+                nextBtn.innerHTML = currentStep === totalSteps - 1 ? 
+                    '提交預約 <i class="fas fa-paper-plane"></i>' : 
+                    '下一步 <i class="fas fa-arrow-right"></i>';
+                
+                // 如果是步驟4且未選擇時間段，禁用下一步按鈕
+                if (currentStep === 4 && !formData.selectedTimeSlot) {
+                    nextBtn.disabled = true;
+                } else {
+                    nextBtn.disabled = false;
                 }
             }
-            
-            // 添加預約時間
-            if (formData.selectedTimeSlot) {
-                detailsHTML += `
-                    <div class="detail-row">
-                        <div class="detail-label">預約時間:</div>
-                        <div class="detail-value">${formData.selectedTimeSlot.date} ${formData.selectedTimeSlot.time}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">預約編號:</div>
-                        <div class="detail-value">${formData.appointmentId}</div>
-                    </div>
-                `;
-            }
-            
-            document.getElementById('appointmentDetails').innerHTML = detailsHTML;
-            
-            // 保存到本地存儲 (模擬數據庫)
-            saveAppointmentToLocalStorage();
-            
-            // 發送確認郵件
-            sendConfirmationEmail();
         }
-        
-        // 保存預約到本地存儲
-        function saveAppointmentToLocalStorage() {
-            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-            
-            // 收集表單數據
-            const appointmentData = {
-                id: formData.appointmentId,
-                timestamp: new Date().toISOString(),
-                timeSlot: formData.selectedTimeSlot,
-                status: 'pending',
-                // 收集其他表單字段
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                contact: document.getElementById('contact').value,
-                // 可以添加更多字段...
-            };
-            
-            appointments.push(appointmentData);
-            localStorage.setItem('appointments', JSON.stringify(appointments));
-        }
-        
-        // 發送確認郵件
-        function sendConfirmationEmail() {
-            const email = document.getElementById('email').value;
-            const name = document.getElementById('name').value;
-            
-            // EmailJS 模板參數
-            const templateParams = {
-                to_email: email,
-                to_name: name,
-                appointment_id: formData.appointmentId,
-                appointment_date: formData.selectedTimeSlot.date,
-                appointment_time: formData.selectedTimeSlot.time,
-                from_name: '放縱減肥諮詢團隊'
-            };
-            
-            // 使用 EmailJS 發送郵件
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-                .then(response => {
-                    console.log('確認郵件發送成功!', response.status, response.text);
-                })
-                .catch(error => {
-                    console.error('郵件發送失敗:', error);
-                    // 可以在此處添加後備方案
-                });
-        }
-        
+
         // 驗證當前步驟
         function validateCurrentStep() {
             const currentStepEl = document.getElementById(`step${currentStep}`);
@@ -834,9 +999,15 @@
                 if (field.type === 'radio' || field.type === 'checkbox') {
                     const name = field.name;
                     const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
-                    if (!checked) return false;
+                    if (!checked) {
+                        alert(`請填寫「${field.labels[0]?.textContent || field.name}」`);
+                        return false;
+                    }
                 } else {
-                    if (!field.value.trim()) return false;
+                    if (!field.value.trim()) {
+                        alert(`請填寫「${field.labels[0]?.textContent || field.name}」`);
+                        return false;
+                    }
                 }
             }
             
@@ -848,25 +1019,21 @@
             
             return true;
         }
-        
-        // 滑動條數值顯示
-        document.getElementById('motivationLevel').addEventListener('input', function() {
-            document.getElementById('sliderValue').textContent = `${this.value} 分`;
-        });
-        
+
+        // ============================================
         // 初始化事件監聽
+        // ============================================
+
         document.addEventListener('DOMContentLoaded', function() {
             // 下一步按鈕
             document.getElementById('nextBtn').addEventListener('click', function() {
                 if (validateCurrentStep()) {
                     if (currentStep === totalSteps - 1) {
                         // 提交表單
-                        goToStep(totalSteps);
+                        handleFormSubmit();
                     } else {
                         goToStep(currentStep + 1);
                     }
-                } else {
-                    alert('請填寫完所有必填欄位');
                 }
             });
             
@@ -877,8 +1044,21 @@
                 }
             });
             
+            // 滑動條數值顯示
+            document.getElementById('motivationLevel').addEventListener('input', function() {
+                document.getElementById('sliderValue').textContent = `${this.value} 分`;
+            });
+            
             // 初始化進度條
             updateProgressBar();
+            updateNavigationButtons();
+            
+            // 測試 EmailJS 連接
+            console.log('EmailJS 配置:', EMAILJS_CONFIG);
+            
+            // 檢查 localStorage 中是否有預約
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            console.log('已有預約數量:', appointments.length);
         });
     </script>
 </body>
