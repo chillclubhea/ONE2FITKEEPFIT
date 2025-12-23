@@ -693,6 +693,15 @@
 
         // 發送確認郵件
         async function sendConfirmationEmail(formData, appointment_id) {
+              // 【新增】关键验证：立即检查邮箱
+    console.log('【调试】收件人邮箱地址:', formData.email); // 检查值
+    console.log('【调试】完整的formData对象:', formData);   // 检查对象结构
+
+    if (!formData.email || formData.email.trim() === '') {
+        console.error('錯誤：收件人電子郵件地址為空');
+        return { success: false, message: '請提供有效的電子郵件地址' };
+    }
+            
             try {
                 console.log('開始發送確認郵件...');
                 
