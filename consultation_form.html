@@ -708,17 +708,73 @@ function testEmailJS() {
             };
         }
 
-        // 發送確認郵件
-              // 發送確認郵件
-        async function sendConfirmationEmail(formData, appointment_id) {
-            // 【新增】关键验证：立即检查邮箱
-            console.log('【调试】收件人邮箱地址:', formData.email); // 检查值
-            console.log('【调试】完整的formData对象:', formData);   // 检查对象结构
+      async function sendConfirmationEmail(formData, appointment_id) {
+    try {
+        // 構建完整的郵件內容
+        const emailContent = `
+預約確認通知
 
-            if (!formData.email || formData.email.trim() === '') {
-                console.error('錯誤：收件人電子郵件地址為空');
-                return { success: false, message: '請提供有效的電子郵件地址' };
-            }
+親愛的 ${formData.name}，
+
+感謝您預約放縱減肥一對一諮詢服務。
+
+預約詳情：
+----------------------------
+預約編號：${appointment_id}
+姓    名：${formData.name}
+聯絡方式：${formData.contact}
+預約時間：${formData.selectedTimeSlot ? formData.selectedTimeSlot.date + ' ' + formData.selectedTimeSlot.time : '待確認'}
+身    高：${formData.height} cm
+體    重：${formData.currentWeight} kg
+目標體重：${formData.targetWeight} kg
+BMI 指數：${calculateBMI(formData.height, formData.currentWeight)}
+----------------------------
+
+會議連結將在諮詢前24小時透過 Line 或 Email 發送給您。
+如有任何問題，請隨時與我們聯繫。
+
+祝您減肥順利！
+
+放縱減肥團隊
+${new Date().getFullYear()}年
+        `.trim();
+        
+        // 使用通用模板參數
+        const templateParams = {
+            user_name: formData.name,
+            user_email: formData.email,
+            appointment_id: appointment_id,
+            appointment_details: emailContent,
+            contact_info: formData.contact,
+            current_date: new Date().toLocaleDateString('zh-TW')
+        };
+        
+        console.log('發送郵件參數:', templateParams);
+        
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID,
+            EMAILJS_CONFIG.TEMPLATE_ID,
+            templateParams
+        );
+        
+        return {
+            success: true,
+            message: '確認郵件已成功發送'
+        };
+        
+    } catch (error) {
+        console.error('詳細錯誤信息:', {
+            status: error.status,
+            text: error.text,
+            message: error.message
+        });
+        
+        return {
+            success: false,
+            message: '郵件發送失敗，請確認您的電子郵件地址是否正確'
+        };
+    }
+}
             
             try {
                 console.log('開始發送確認郵件...');
