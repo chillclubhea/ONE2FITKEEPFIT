@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>放縱減肥一對一諮詢預約</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f8fdf8 0%, #e8f7ef 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e0f0e9;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #4caf84, #2e7d5d);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #f9fffc;
+        }
+        .step {
+            text-align: center;
+            flex: 1;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0f0e9;
+            color: #7a8c85;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .step.active .step-circle {
+            background: #4caf84;
+            color: white;
+            transform: scale(1.1);
+        }
+        .step-label {
+            font-size: 0.9rem;
+            color: #7a8c85;
+            font-weight: 500;
+        }
+        .step.active .step-label {
+            color: #2e7d5d;
+            font-weight: 600;
+        }
+        .form-content {
+            padding: 40px;
+            min-height: 500px;
+            position: relative;
+        }
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .form-step.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #2e7d5d;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        .question-group {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2d3e34;
+            font-size: 1.1rem;
+        }
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0f0e9;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f9fffc;
+        }
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #6dd5a8;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(109, 213, 168, 0.2);
+        }
+        .radio-group,
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .radio-option,
+        .checkbox-option {
+            flex: 1;
+        }
+        .radio-option input,
+        .checkbox-option input {
+            display: none;
+        }
+        .radio-option label,
+        .checkbox-option label {
+            display: block;
+            padding: 18px;
+            background-color: #f2faf6;
+            border: 2px solid #e0f0e9;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-bottom: 0;
+        }
+        .radio-option input:checked + label,
+        .checkbox-option input:checked + label {
+            background-color: #d5f4e6;
+            border-color: #4caf84;
+            color: #1a5632;
+            font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 132, 0.2);
+        }
+        .slider-container {
+            padding: 20px 10px;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 10px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #e0f0e9, #4caf84);
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #2e7d5d;
+            cursor: pointer;
+            border: 4px solid white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .slider-value {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e7d5d;
+            margin-top: 15px;
+        }
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .time-slot {
+            padding: 20px;
+            border: 2px solid #e0f0e9;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        .time-slot:hover {
+            border-color: #6dd5a8;
+            transform: translateY(-3px);
+        }
+        .time-slot.selected {
+            background: #d5f4e6;
+            border-color: #4caf84;
+            color: #1a5632;
+            font-weight: 600;
+        }
+        .time-slot.unavailable {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f5f5f5;
+        }
+        .time-slot .date {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .time-slot .time {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e0f0e9;
+        }
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-prev {
+            background: #f2faf6;
+            color: #2e7d5d;
+            border: 2px solid #e0f0e9;
+        }
+        .btn-next,
+        .btn-submit {
+            background: linear-gradient(to right, #4caf84, #2e7d5d);
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 132, 0.3);
+        }
+        .btn-next:hover,
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 132, 0.4);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .confirmation {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .confirmation i {
+            font-size: 4rem;
+            color: #4caf84;
+            margin-bottom: 20px;
+        }
+        .confirmation h2 {
+            color: #2e7d5d;
+            margin-bottom: 15px;
+        }
+        .confirmation p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .appointment-details {
+            background: #f9fffc;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: left;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0f0e9;
+        }
+        .detail-label {
+            font-weight: 600;
+            width: 150px;
+            color: #2d3e34;
+        }
+        .detail-value {
+            flex: 1;
+            color: #555;
+        }
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            .form-content {
+                padding: 25px;
+            }
+            .progress-steps {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            .step {
+                margin-bottom: 10px;
+            }
+            .radio-group,
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <!-- 進度條 -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <!-- 步驟指示器 -->
+        <div class="progress-steps">
+            <div class="step active" data-step="1">
+                <div class="step-circle">1</div>
+                <div class="step-label">基本資料</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-circle">2</div>
+                <div class="step-label">生活型態</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-label">減肥心態</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-circle">4</div>
+                <div class="step-label">預約時間</div>
+            </div>
+            <div class="step" data-step="5">
+                <div class="step-circle">5</div>
+                <div class="step-label">確認</div>
+            </div>
+        </div>
+        
+        <!-- 表單內容 -->
+        <div class="form-content">
+            <form id="consultationForm">
+                <!-- 步驟 1: 基本資料 -->
+                <div class="form-step active" id="step1">
+                    <h2>基本身體數據</h2>
+                    
+                    <div class="question-group">
+                        <label for="name" class="required">您的姓名</label>
+                        <input type="text" id="name" name="name" placeholder="請輸入您的姓名" required>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label class="required">您的性別</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="male" name="gender" value="男" required>
+                                <label for="male">男</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="female" name="gender" value="女" required>
+                                <label for="female">女</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label for="age" class="required">您的年齡</label>
+                        <input type="number" id="age" name="age" min="12" max="80" placeholder="請輸入年齡" required>
+                    </div>
+                </div>
+                
+                <!-- 步驟 2: 生活型態 -->
+                <div class="form-step" id="step2">
+                    <h2>現況與生活型態</h2>
+                    
+                    <div class="question-group">
+                        <label for="height" class="required">您的身高 (cm)</label>
+                        <input type="number" id="height" name="height" min="100" max="250" placeholder="請輸入身高" required>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label for="currentWeight" class="required">您的目前體重 (kg)</label>
+                        <input type="number" id="currentWeight" name="currentWeight" step="0.1" min="30" max="200" placeholder="請輸入目前體重" required>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label for="targetWeight" class="required">您的目標體重 (kg)</label>
+                        <input type="number" id="targetWeight" name="targetWeight" step="0.1" min="30" max="200" placeholder="請輸入目標體重" required>
+                    </div>
+                </div>
+                
+                <!-- 步驟 3: 減肥心態 -->
+                <div class="form-step" id="step3">
+                    <h2>心態與投資意願</h2>
+                    
+                    <div class="question-group">
+                        <label for="occupation" class="required">您的職業是？</label>
+                        <input type="text" id="occupation" name="occupation" placeholder="例如：上班族、學生、家管等" required>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label class="required">目前的飲食習慣？（可多選）</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="diet1" name="diet" value="外食族">
+                                <label for="diet1">外食族</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="diet2" name="diet" value="自己煮">
+                                <label for="diet2">自己煮</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="diet3" name="diet" value="手搖/甜食控">
+                                <label for="diet3">手搖/甜食控</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="diet4" name="diet" value="宵夜習慣">
+                                <label for="diet4">宵夜習慣</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="diet5" name="diet" value="飲食不規律">
+                                <label for="diet5">飲食不規律</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label class="required">目前的運動頻率？</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="exercise0" name="exercise" value="不運動" required>
+                                <label for="exercise0">不運動</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="exercise1" name="exercise" value="偶爾一週1次" required>
+                                <label for="exercise1">偶爾一週1次</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="exercise2" name="exercise" value="規律一週2-3次" required>
+                                <label for="exercise2">規律一週2-3次</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="exercise3" name="exercise" value="運動愛好者" required>
+                                <label for="exercise3">運動愛好者</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 步驟 4: 預約時間 -->
+                <div class="form-step" id="step4">
+                    <h2>選擇預約時間</h2>
+                    
+                    <div class="question-group">
+                        <label for="motivation" class="required">為什麼想要減肥？（動機）</label>
+                        <textarea id="motivation" name="motivation" rows="3" placeholder="請告訴我們您想減肥的原因..." required></textarea>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label for="motivationLevel" class="required">你有多想減肥成功？（1-10分）</label>
+                        <div class="slider-container">
+                            <input type="range" id="motivationLevel" name="motivationLevel" min="1" max="10" value="5">
+                            <div class="slider-value" id="sliderValue">5 分</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label class="required">選擇預約時段</label>
+                        <div class="time-slots" id="timeSlots">
+                            <!-- 時間段將由JavaScript動態生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 步驟 5: 確認與聯繫資料 -->
+                <div class="form-step" id="step5">
+                    <h2>確認預約與聯繫資料</h2>
+                    
+                    <div class="question-group">
+                        <label class="required">過去是否有減肥失敗的經驗？</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="failureYes" name="failure" value="是" required>
+                                <label for="failureYes">是</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="failureNo" name="failure" value="否" required>
+                                <label for="failureNo">否</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label class="required">為了改變你是否願意投資過萬？</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="investmentYes" name="investment" value="是" required>
+                                <label for="investmentYes">是</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="investmentNo" name="investment" value="否" required>
+                                <label for="investmentNo">否</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="investmentMaybe" name="investment" value="視計畫內容而定" required>
+                                <label for="investmentMaybe">視計畫內容而定</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label for="contact" class="required">您的 Line ID 或 手機號碼</label>
+                        <input type="text" id="contact" name="contact" placeholder="請輸入Line ID或手機號碼" required>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label for="email" class="required">您的電子郵件 (用於發送確認信)</label>
+                        <input type="email" id="email" name="email" placeholder="請輸入電子郵件地址" required>
+                    </div>
+                    
+                    <div class="question-group">
+                        <label for="supplement">有任何想補充的可以在這邊告訴我喔</label>
+                        <textarea id="supplement" name="supplement" rows="3" placeholder="任何想讓我們知道的資訊，例如健康狀況、特殊需求等..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- 確認頁面 -->
+                <div class="form-step" id="step6">
+                    <div class="confirmation">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>預約申請已提交成功！</h2>
+                        <p>我們已收到您的預約申請，確認信已發送到您的電子郵件</p>
+                        
+                        <div class="appointment-details" id="appointmentDetails">
+                            <!-- 預約詳情將由JavaScript動態生成 -->
+                        </div>
+                        
+                        <p><strong>會議連結：</strong>預約完成後，會議連結將在諮詢前24小時透過 Line 或 Email 發送給您</p>
+                        <p>請務必留意您的訊息，並於預約時間準時進入會議</p>
+                        
+                        <button type="button" class="btn btn-submit" onclick="window.location.reload()">
+                            <i class="fas fa-plus-circle"></i> 建立新預約
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 導航按鈕 -->
+                <div class="form-navigation" id="formNavigation">
+                    <button type="button" class="btn btn-prev" id="prevBtn">
+                        <i class="fas fa-arrow-left"></i> 上一步
+                    </button>
+                    <button type="button" class="btn btn-next" id="nextBtn">
+                        下一步 <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 初始化 EmailJS (需要註冊並獲取自己的USER_ID)
+        // 前往 https://www.emailjs.com/ 註冊免費帳戶
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // 替換為您的EmailJS公鑰
+        })();
+        
+        // 表單狀態管理
+        let currentStep = 1;
+        const totalSteps = 6;
+        let formData = {
+            selectedTimeSlot: null,
+            appointmentId: generateAppointmentId()
+        };
+        
+        // 生成預約ID
+        function generateAppointmentId() {
+            return 'APT-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+        }
+        
+        // 初始化時間段
+        function initTimeSlots() {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            
+            // 生成未來7天的時間段
+            const timeSlots = [];
+            const now = new Date();
+            
+            for (let i = 1; i <= 7; i++) {
+                const date = new Date();
+                date.setDate(now.getDate() + i);
+                
+                // 每天3個時間段
+                const times = ['09:00-10:00', '14:00-15:00', '19:00-20:00'];
+                
+                times.forEach(time => {
+                    const slotId = `slot-${i}-${time}`;
+                    const isAvailable = Math.random() > 0.3; // 70%的機率可用
+                    
+                    const slotElement = document.createElement('div');
+                    slotElement.className = `time-slot ${isAvailable ? '' : 'unavailable'}`;
+                    slotElement.dataset.id = slotId;
+                    slotElement.dataset.date = date.toLocaleDateString('zh-TW');
+                    slotElement.dataset.time = time;
+                    slotElement.dataset.available = isAvailable;
+                    
+                    if (isAvailable) {
+                        slotElement.onclick = () => selectTimeSlot(slotElement);
+                    }
+                    
+                    slotElement.innerHTML = `
+                        <div class="date">${date.toLocaleDateString('zh-TW', { month: 'long', day: 'numeric' })}</div>
+                        <div class="time">${time}</div>
+                        <div class="status">${isAvailable ? '可預約' : '已額滿'}</div>
+                    `;
+                    
+                    timeSlotsContainer.appendChild(slotElement);
+                });
+            }
+        }
+        
+        // 選擇時間段
+        function selectTimeSlot(element) {
+            if (element.dataset.available === 'false') return;
+            
+            // 移除之前選擇的樣式
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // 添加當前選擇樣式
+            element.classList.add('selected');
+            
+            // 保存選擇的時間
+            formData.selectedTimeSlot = {
+                date: element.dataset.date,
+                time: element.dataset.time,
+                id: element.dataset.id
+            };
+            
+            // 啟用下一步按鈕
+            document.getElementById('nextBtn').disabled = false;
+        }
+        
+        // 更新進度條
+        function updateProgressBar() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            
+            // 更新步驟指示器
+            document.querySelectorAll('.step').forEach(step => {
+                const stepNum = parseInt(step.dataset.step);
+                step.classList.toggle('active', stepNum === currentStep);
+            });
+        }
+        
+        // 切換步驟
+        function goToStep(step) {
+            // 隱藏所有步驟
+            document.querySelectorAll('.form-step').forEach(stepEl => {
+                stepEl.classList.remove('active');
+            });
+            
+            // 顯示目標步驟
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // 更新當前步驟
+            currentStep = step;
+            
+            // 更新進度條
+            updateProgressBar();
+            
+            // 更新導航按鈕狀態
+            document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'flex';
+            
+            if (step === totalSteps) {
+                document.getElementById('formNavigation').style.display = 'none';
+                showConfirmation();
+            } else {
+                document.getElementById('formNavigation').style.display = 'flex';
+                document.getElementById('nextBtn').innerHTML = step === totalSteps - 1 
+                    ? '提交預約 <i class="fas fa-paper-plane"></i>' 
+                    : '下一步 <i class="fas fa-arrow-right"></i>';
+            }
+            
+            // 如果是步驟4，初始化時間段
+            if (step === 4) {
+                initTimeSlots();
+            }
+        }
+        
+        // 顯示確認頁面
+        function showConfirmation() {
+            // 收集所有表單數據
+            const form = document.getElementById('consultationForm');
+            const formElements = form.elements;
+            
+            let detailsHTML = '';
+            for (let element of formElements) {
+                if (element.type === 'radio' || element.type === 'checkbox') {
+                    if (element.checked) {
+                        detailsHTML += `
+                            <div class="detail-row">
+                                <div class="detail-label">${element.name}:</div>
+                                <div class="detail-value">${element.value}</div>
+                            </div>
+                        `;
+                    }
+                } else if (element.name && element.value && element.type !== 'button') {
+                    detailsHTML += `
+                        <div class="detail-row">
+                            <div class="detail-label">${element.name}:</div>
+                            <div class="detail-value">${element.value}</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // 添加預約時間
+            if (formData.selectedTimeSlot) {
+                detailsHTML += `
+                    <div class="detail-row">
+                        <div class="detail-label">預約時間:</div>
+                        <div class="detail-value">${formData.selectedTimeSlot.date} ${formData.selectedTimeSlot.time}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">預約編號:</div>
+                        <div class="detail-value">${formData.appointmentId}</div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('appointmentDetails').innerHTML = detailsHTML;
+            
+            // 保存到本地存儲 (模擬數據庫)
+            saveAppointmentToLocalStorage();
+            
+            // 發送確認郵件
+            sendConfirmationEmail();
+        }
+        
+        // 保存預約到本地存儲
+        function saveAppointmentToLocalStorage() {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            
+            // 收集表單數據
+            const appointmentData = {
+                id: formData.appointmentId,
+                timestamp: new Date().toISOString(),
+                timeSlot: formData.selectedTimeSlot,
+                status: 'pending',
+                // 收集其他表單字段
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                contact: document.getElementById('contact').value,
+                // 可以添加更多字段...
+            };
+            
+            appointments.push(appointmentData);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+        }
+        
+        // 發送確認郵件
+        function sendConfirmationEmail() {
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            
+            // EmailJS 模板參數
+            const templateParams = {
+                to_email: email,
+                to_name: name,
+                appointment_id: formData.appointmentId,
+                appointment_date: formData.selectedTimeSlot.date,
+                appointment_time: formData.selectedTimeSlot.time,
+                from_name: '放縱減肥諮詢團隊'
+            };
+            
+            // 使用 EmailJS 發送郵件
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(response => {
+                    console.log('確認郵件發送成功!', response.status, response.text);
+                })
+                .catch(error => {
+                    console.error('郵件發送失敗:', error);
+                    // 可以在此處添加後備方案
+                });
+        }
+        
+        // 驗證當前步驟
+        function validateCurrentStep() {
+            const currentStepEl = document.getElementById(`step${currentStep}`);
+            const requiredFields = currentStepEl.querySelectorAll('[required]');
+            
+            for (let field of requiredFields) {
+                if (field.type === 'radio' || field.type === 'checkbox') {
+                    const name = field.name;
+                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
+                    if (!checked) return false;
+                } else {
+                    if (!field.value.trim()) return false;
+                }
+            }
+            
+            // 特殊驗證：步驟4需要選擇時間段
+            if (currentStep === 4 && !formData.selectedTimeSlot) {
+                alert('請選擇一個預約時段');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // 滑動條數值顯示
+        document.getElementById('motivationLevel').addEventListener('input', function() {
+            document.getElementById('sliderValue').textContent = `${this.value} 分`;
+        });
+        
+        // 初始化事件監聽
+        document.addEventListener('DOMContentLoaded', function() {
+            // 下一步按鈕
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                if (validateCurrentStep()) {
+                    if (currentStep === totalSteps - 1) {
+                        // 提交表單
+                        goToStep(totalSteps);
+                    } else {
+                        goToStep(currentStep + 1);
+                    }
+                } else {
+                    alert('請填寫完所有必填欄位');
+                }
+            });
+            
+            // 上一步按鈕
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                if (currentStep > 1) {
+                    goToStep(currentStep - 1);
+                }
+            });
+            
+            // 初始化進度條
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>
