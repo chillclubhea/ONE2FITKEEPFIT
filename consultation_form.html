@@ -628,7 +628,7 @@
         // ============================================
 
         // 生成預約ID
-        function generateAppointmentId() {
+        function generateappointment_id() {
             const date = new Date();
             const year = date.getFullYear().toString().slice(-2);
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -692,7 +692,7 @@
         }
 
         // 發送確認郵件
-        async function sendConfirmationEmail(formData, appointmentId) {
+        async function sendConfirmationEmail(formData, appointment_id) {
             try {
                 console.log('開始發送確認郵件...');
                 
@@ -702,7 +702,7 @@
                 // 準備模板參數
                 const templateParams = {
                     to_name: formData.name,
-                    appointment_id: appointmentId,
+                    appointment_id: appointment_id,
                     appointment_date: formData.selectedTimeSlot ? formData.selectedTimeSlot.date : formattedDateString,appointment_time: formData.selectedTimeSlot ? formData.selectedTimeSlot.time : '待確認',
                     contact: formData.contact,
                     motivation: formData.motivation ? formData.motivation.substring(0, 100) + (formData.motivation.length > 100 ? '...' : '') : '未提供',
@@ -744,11 +744,11 @@
         }
 
         // 保存到本地存儲
-        function saveToLocalStorage(formData, appointmentId, emailSent) {
+        function saveToLocalStorage(formData, appointment_id, emailSent) {
             const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
             
             const appointment = {
-                id: appointmentId,
+                id: appointment_id,
                 timestamp: new Date().toISOString(),
                 ...formData,
                 emailSent: emailSent,
@@ -832,11 +832,11 @@
         }
 
         // 顯示成功訊息
-        function showSuccessMessage(formData, appointmentId, emailResult) {
+        function showSuccessMessage(formData, appointment_id, emailResult) {
             const detailsHTML = `
                 <div class="detail-row">
                     <div class="detail-label">預約編號</div>
-                    <div class="detail-value">${appointmentId}</div>
+                    <div class="detail-value">${appointment_id}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">姓名</div>
@@ -881,7 +881,7 @@
         async function handleFormSubmit() {
             // 收集表單數據
             const collectedData = collectFormData();
-            const appointmentId = generateAppointmentId();
+            const appointment_id = generateappointment_id();
             
             // 顯示加載中
             const submitBtn = document.getElementById('nextBtn');
@@ -891,13 +891,13 @@
             
             try {
                 // 1. 發送確認郵件
-                const emailResult = await sendConfirmationEmail(collectedData, appointmentId);
+                const emailResult = await sendConfirmationEmail(collectedData, appointment_id);
                 
                 // 2. 保存到本地存儲
-                const savedAppointment = saveToLocalStorage(collectedData, appointmentId, emailResult.success);
+                const savedAppointment = saveToLocalStorage(collectedData, appointment_id, emailResult.success);
                 
                 // 3. 顯示成功訊息
-                showSuccessMessage(collectedData, appointmentId, emailResult);
+                showSuccessMessage(collectedData, appointment_id, emailResult);
                 
                 // 4. 跳轉到成功頁面
                 goToStep(6);
