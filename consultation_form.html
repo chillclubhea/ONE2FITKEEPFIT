@@ -703,25 +703,11 @@
                 const templateParams = {
                     to_name: formData.name,
                     appointment_id: appointmentId,
-                    appointment_date: formData.selectedTimeSlot ? 
-                        formData.selectedTimeSlot.date : 
-                        new Date().toLocaleDateString('zh-TW', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric',
-                            weekday: 'long'
-                        }),
-                    appointment_time: formData.selectedTimeSlot ? 
-                        formData.selectedTimeSlot.time : 
-                        '待確認',
+                    appointment_date: formData.selectedTimeSlot ? formData.selectedTimeSlot.date : formattedDateString,appointment_time: formData.selectedTimeSlot ? formData.selectedTimeSlot.time : '待確認',
                     contact: formData.contact,
-                    motivation: formData.motivation ? 
-                        formData.motivation.substring(0, 100) + 
-                        (formData.motivation.length > 100 ? '...' : '') : 
-                        '未提供',
+                    motivation: formData.motivation ? formData.motivation.substring(0, 100) + (formData.motivation.length > 100 ? '...' : '') : '未提供',
                     bmi: bmi,
-                    current_year: new Date().getFullYear().toString(),
-                    to_email: formData.email
+                    current_year: new Date().getFullYear().toString()
                 };
                 
                 console.log('郵件參數:', templateParams);
