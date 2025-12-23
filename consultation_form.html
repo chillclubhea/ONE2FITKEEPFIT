@@ -708,125 +708,74 @@ function testEmailJS() {
             };
         }
 
-      async function sendConfirmationEmail(formData, appointment_id) {
+      // ============================================
+// 修正的 sendConfirmationEmail 函數
+// ============================================
+// ============================================
+// 修正的 sendConfirmationEmail 函數
+// ============================================
+async function sendConfirmationEmail(formData, appointment_id) {
+    // 關鍵驗證：檢查郵件地址
+    if (!formData.email || formData.email.trim() === '') {
+        console.error('錯誤：收件人電子郵件地址為空');
+        return { success: false, message: '請提供有效的電子郵件地址' };
+    }
+    
     try {
-        // 構建完整的郵件內容
-        const emailContent = `
-預約確認通知
-
-親愛的 ${formData.name}，
-
-感謝您預約放縱減肥一對一諮詢服務。
-
-預約詳情：
-----------------------------
-預約編號：${appointment_id}
-姓    名：${formData.name}
-聯絡方式：${formData.contact}
-預約時間：${formData.selectedTimeSlot ? formData.selectedTimeSlot.date + ' ' + formData.selectedTimeSlot.time : '待確認'}
-身    高：${formData.height} cm
-體    重：${formData.currentWeight} kg
-目標體重：${formData.targetWeight} kg
-BMI 指數：${calculateBMI(formData.height, formData.currentWeight)}
-----------------------------
-
-會議連結將在諮詢前24小時透過 Line 或 Email 發送給您。
-如有任何問題，請隨時與我們聯繫。
-
-祝您減肥順利！
-
-放縱減肥團隊
-${new Date().getFullYear()}年
-        `.trim();
+        console.log('開始發送確認郵件...');
         
-        // 使用通用模板參數
+        // 準備模板參數 - 與模板中的變數名稱完全一致
         const templateParams = {
-            user_name: formData.name,
-            user_email: formData.email,
-            appointment_id: appointment_id,
-            appointment_details: emailContent,
-            contact_info: formData.contact,
-            current_date: new Date().toLocaleDateString('zh-TW')
+            to_name: formData.name, // 匹配模板中的 {{to_name}}
+            appointment_id: appointment_id, // 匹配模板中的 {{appointment_id}}
+            appointment_date: formData.selectedTimeSlot ? formData.selectedTimeSlot.date : '待確認', // 匹配模板中的 {{appointment_date}}
+            appointment_time: formData.selectedTimeSlot ? formData.selectedTimeSlot.time : '待確認', // 匹配模板中的 {{appointment_time}}
+            contact: formData.contact, // 匹配模板中的 {{contact}}
+            current_year: new Date().getFullYear().toString() // 匹配模板中的 {{current_year}}
+            // 注意：模板中沒有 to_email 變數，所以不包含在這裡
         };
         
-        console.log('發送郵件參數:', templateParams);
+        console.log('郵件參數:', templateParams);
+        console.log('收件人郵箱:', formData.email);
         
+        // 發送郵件
         const response = await emailjs.send(
             EMAILJS_CONFIG.SERVICE_ID,
             EMAILJS_CONFIG.TEMPLATE_ID,
             templateParams
         );
         
+        console.log('郵件發送成功:', response);
+        
         return {
             success: true,
-            message: '確認郵件已成功發送'
+            message: '確認郵件已成功發送',
+            status: response.status,
+            text: response.text
         };
         
     } catch (error) {
-        console.error('詳細錯誤信息:', {
-            status: error.status,
-            text: error.text,
-            message: error.message
-        });
+        console.error('郵件發送失敗詳細錯誤:', error);
+        
+        // 檢查是否為 422 錯誤
+        if (error.status === 422) {
+            console.error('422 錯誤：模板參數不匹配或缺少必需的參數');
+            console.error('請確認 EmailJS 模板中的變數名稱：');
+            console.error('1. {{to_name}}');
+            console.error('2. {{appointment_id}}');
+            console.error('3. {{appointment_date}}');
+            console.error('4. {{appointment_time}}');
+            console.error('5. {{contact}}');
+            console.error('6. {{current_year}}');
+        }
         
         return {
             success: false,
-            message: '郵件發送失敗，請確認您的電子郵件地址是否正確'
+            message: `郵件發送失敗 (錯誤碼: ${error.status || '未知'})`,
+            error: error
         };
     }
 }
-            
-            try {
-                console.log('開始發送確認郵件...');
-                
-                // 計算 BMI
-                const bmi = calculateBMI(formData.height, formData.currentWeight);
-                
-                // 準備模板參數
-                const templateParams = {
-                    to_name: formData.name,
-                    to_email: formData.email, // 确保 formData.email 是您从表单中获取的邮箱地址
-                    appointment_id: appointment_id,
-                    appointment_date: formData.selectedTimeSlot ? formData.selectedTimeSlot.date : '待確認',
-                    appointment_time: formData.selectedTimeSlot ? formData.selectedTimeSlot.time : '待確認',
-                    contact: formData.contact,
-                    motivation: formData.motivation ? formData.motivation.substring(0, 100) + (formData.motivation.length > 100 ? '...' : '') : '未提供',
-                    bmi: bmi,
-                    current_year: new Date().getFullYear().toString()
-                };
-                
-                console.log('郵件參數:', templateParams);
-                
-                // 發送郵件
-                const response = await emailjs.send(
-                    EMAILJS_CONFIG.SERVICE_ID,
-                    EMAILJS_CONFIG.TEMPLATE_ID,
-                    templateParams
-                );
-                
-                console.log('郵件發送成功:', response);
-                
-                return {
-                    success: true,
-                    message: '確認郵件已成功發送',
-                    status: response.status,
-                    text: response.text
-                };
-                
-            } catch (error) {
-                console.error('郵件發送失敗:', error);
-                
-                return {
-                    success: false,
-                    message: '郵件發送失敗',
-                    error: {
-                        code: error.code,
-                        text: error.text,
-                        message: error.message
-                    }
-                };
-            }
-        }
 
         // 保存到本地存儲
         function saveToLocalStorage(formData, appointment_id, emailSent) {
