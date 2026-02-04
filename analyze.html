@@ -3,516 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>代謝修復專家 - 客戶專屬分析報告系統</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>深度代謝根源評估報告 | Metabolic Expert</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --bg-panel: #1e293b;
-            --primary: #3b82f6;
-            --success: #10b981;
-            --warning: #f59e0b;
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --accent: #f59e0b;
             --danger: #ef4444;
-            --text-light: #f1f5f9;
-            --text-gray: #94a3b8;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'M PLUS Rounded 1c', sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-light); padding: 20px; min-height: 100vh; }
-
-        /* 控制台頭部 */
-        .admin-controls {
-            background: var(--bg-panel);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            border: 1px solid #334155;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .selector-group label { color: var(--text-gray); margin-right: 10px; }
-        select { padding: 10px 20px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 1rem; }
-
-        /* 標籤切換 */
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn {
-            padding: 12px 25px;
-            background: var(--bg-panel);
-            color: var(--text-gray);
-            border: 1px solid #334155;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .tab-btn:hover:not(.active) { background: #334155; }
-
-        /* 報告容器 */
-        .report-container { display: none; animation: fadeIn 0.5s; }
-        .report-container.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* === 初步報告樣式 (Admin View) === */
-        .prelim-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .admin-card {
-            background: white;
-            color: #1e293b;
-            padding: 25px;
-            border-radius: 16px;
-            border-left: 5px solid var(--primary);
-        }
-
-        .risk-card { border-left-color: var(--danger); }
-        .value-card { border-left-color: var(--success); }
-
-        .tag {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            background: #e2e8f0;
-            color: #475569;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'M PLUS Rounded 1c', sans-serif; }
+        body { background-color: #0a0f1e; color: #334155; line-height: 1.6; padding: 20px; }
         
-        .tag.urgent { background: #fee2e2; color: #991b1b; }
+        .report-wrapper { max-width: 900px; margin: 0 auto; background: var(--card-bg); border-radius: 30px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-        /* === 詳細報告樣式 (Client View) === */
-        .detail-view {
-            background: white;
-            color: #333;
-            border-radius: 20px;
-            overflow: hidden;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        /* Header */
+        .header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 50px 40px; text-align: center; position: relative; }
+        .header h1 { font-size: 2.2rem; letter-spacing: 2px; margin-bottom: 10px; }
+        .header p { opacity: 0.8; font-weight: 300; }
+        .expert-badge { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; }
 
-        .detail-header {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
+        .content-padding { padding: 40px; }
 
-        .detail-body { padding: 40px; }
+        /* Profile Grid */
+        .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; background: var(--light-bg); padding: 25px; border-radius: 20px; margin-bottom: 30px; }
+        .profile-item { font-size: 0.95rem; }
+        .profile-item strong { color: var(--primary); display: block; font-size: 0.8rem; text-transform: uppercase; }
+
+        /* Section Styling */
+        .section-title { font-size: 1.4rem; color: var(--dark); margin: 40px 0 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        .section-title i { color: var(--primary); }
+
+        /* Itemized Analysis */
+        .analysis-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin-bottom: 15px; transition: all 0.3s; }
+        .analysis-card:hover { border-color: var(--primary); transform: translateX(5px); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .data-label { font-weight: 800; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+        .data-value { background: #eff6ff; color: var(--primary); padding: 2px 12px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; }
+        .expert-commentary { font-size: 0.92rem; color: #64748b; border-left: 3px solid #cbd5e1; padding-left: 15px; margin-top: 10px; }
+
+        /* Holistic Synthesis */
+        .synthesis-box { background: linear-gradient(to right, #f0f9ff, #e0f2fe); border-radius: 20px; padding: 30px; margin-top: 40px; border: 1px dashed var(--primary); }
+        .synthesis-tag { display: inline-block; background: var(--primary); color: white; padding: 4px 15px; border-radius: 50px; font-size: 0.85rem; margin-bottom: 15px; }
+
+        /* Score Display */
+        .score-container { display: flex; align-items: center; gap: 30px; margin-bottom: 30px; }
+        .score-circle { width: 100px; height: 100px; border-radius: 50%; border: 8px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: var(--primary); border-top-color: var(--primary); }
+
+        /* CTA Footer */
+        .cta-section { background: #f1f5f9; padding: 40px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .consult-btn { display: inline-block; background: var(--primary); color: white; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 700; margin-top: 20px; box-shadow: 0 10px 20px rgba(37,99,235,0.3); }
         
-        .radar-box { height: 350px; margin: 30px auto; max-width: 600px; }
+        /* Footer Info */
+        .footer-bio { margin-top: 40px; font-size: 0.85rem; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }
 
-        .analysis-block {
-            background: #f8fafc;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .root-cause-title {
-            color: #1e3a8a;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-list li { margin-bottom: 10px; padding-left: 20px; position: relative; }
-        .action-list li::before {
-            content: "✓"; color: var(--success); position: absolute; left: 0; font-weight: bold;
-        }
-
-        /* 打印按鈕 */
-        .action-bar {
-            text-align: right; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 20px;
-        }
-        .btn-print {
-            background: #475569; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;
+        @media (max-width: 600px) {
+            .content-padding { padding: 20px; }
+            .score-container { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="admin-controls">
-        <div class="selector-group">
-            <label><i class="fas fa-users"></i> 選擇客戶檔案 ID：</label>
-            <select id="clientSelector" onchange="loadClientData()">
-                </select>
-        </div>
-        <div>
-            <span style="color: var(--text-gray); font-size: 0.9rem;">系統狀態：</span>
-            <span style="color: var(--success);"><i class="fas fa-circle" style="font-size: 0.6rem;"></i> 數據已就緒</span>
-        </div>
+<div class="report-wrapper">
+    <div class="header">
+        <div class="expert-badge">代謝修復專家 | 方案定制</div>
+        <p>METABOLIC ROOT CAUSE REPORT</p>
+        <h1>代謝根源深度分析報告</h1>
+        <p>這不只是關於體重，而是關於您身體的「能源管理系統」</p>
     </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('prelim')">📊 初步評估報告 (Admin)</button>
-        <button class="tab-btn" onclick="switchTab('detail')">📑 詳細深度報告 (Client)</button>
-    </div>
+    <div class="content-padding">
+        <div class="profile-grid">
+            <div class="profile-item"><strong>客戶姓名/IG</strong><span id="name">@sarah_health</span></div>
+            <div class="profile-item"><strong>年齡/性別</strong><span id="age-gender">34 / 女</span></div>
+            <div class="profile-item"><strong>身高體重</strong><span id="hw">162cm / 68kg</span></div>
+            <div class="profile-item"><strong>腰圍</strong><span id="waist">86 cm (風險預警)</span></div>
+        </div>
 
-    <div id="prelim" class="report-container active">
-        <div class="prelim-grid">
-            <div class="admin-card value-card">
-                <h3><i class="fas fa-wallet"></i> 客戶價值評估</h3>
-                <div style="margin-top: 15px;">
-                    <p><strong>投資意願：</strong> <span id="p-invest"></span></p>
-                    <p><strong>決心程度：</strong> <span id="p-commit"></span></p>
-                    <p><strong>預估轉化率：</strong> <span id="p-score" style="font-size: 1.5rem; font-weight: bold;"></span></p>
-                    <div style="margin-top: 15px; padding: 10px; background: #f0fdf4; border-radius: 8px; color: #166534; font-size: 0.9rem;">
-                        <i class="fas fa-lightbulb"></i> 銷售建議：<span id="p-advice"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="admin-card risk-card">
-                <h3><i class="fas fa-notes-medical"></i> 代謝風險快篩</h3>
-                <div style="margin-top: 15px;">
-                    <p><strong>BMI/腰圍風險：</strong> <span id="p-body-risk"></span></p>
-                    <p><strong>壓力指數：</strong> <span id="p-stress"></span></p>
-                    <div style="margin-top: 10px;">
-                        <strong>關鍵症狀：</strong>
-                        <div id="p-symptoms-tags" style="margin-top: 5px;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="admin-card">
-                <h3><i class="fas fa-bullseye"></i> 核心痛點摘要</h3>
-                <div style="margin-top: 15px; font-size: 0.95rem; line-height: 1.6;">
-                    <p style="color: #64748b; margin-bottom: 5px;">客戶原話：</p>
-                    <p id="p-pain" style="font-style: italic; background: #f1f5f9; padding: 10px; border-radius: 8px;"></p>
-                    <p style="margin-top: 15px;"><strong>過往失敗經驗：</strong> <span id="p-history"></span></p>
-                </div>
+        <div class="score-container">
+            <div class="score-circle">62</div>
+            <div>
+                <h3 style="color: var(--dark)">代謝靈活度評分：<span style="color: var(--danger)">低下</span></h3>
+                <p style="font-size: 0.9rem">目前體質傾向：<strong>壓力型囤積體質 (Adrenal Fatigue)</strong></p>
+                <p style="font-size: 0.9rem">能量模式：<span class="data-value" style="background: #fee2e2; color: #b91c1c;">🚨 節能儲存模式</span></p>
             </div>
         </div>
-    </div>
 
-    <div id="detail" class="report-container">
-        <div class="detail-view">
-            <div class="detail-header">
-                <h2>METABOLIC ROOT CAUSE ANALYSIS</h2>
-                <h1 style="font-size: 2.5rem; margin: 10px 0;">代謝根源深度分析報告</h1>
-                <p>專屬 ID: <span id="d-id"></span> | 客戶: <span id="d-name"></span></p>
+        <div class="section-title"><i class="fas fa-microscope"></i> 代謝指標逐項解析</div>
+
+        <div class="analysis-card">
+            <div class="card-header">
+                <div class="data-label"><i class="fas fa-tint"></i> 代謝關鍵指標：飲水量</div>
+                <div class="data-value">1,200 ml / 日</div>
             </div>
-
-            <div class="detail-body">
-                <div style="text-align: center; margin-bottom: 40px;">
-                    <h3 style="color: #1e3a8a;">您的「代謝五維度」檢測圖</h3>
-                    <p style="color: #64748b;">透過數據化分析，找出拖垮您代謝的短板</p>
-                    <div class="radar-box">
-                        <canvas id="metabolicRadar"></canvas>
-                    </div>
-                </div>
-
-                <h3 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px; color: #333;">
-                    <i class="fas fa-stethoscope"></i> 專家診斷結果
-                </h3>
-
-                <div id="dynamic-analysis">
-                    </div>
-
-                <div class="analysis-block" style="border-left-color: var(--success); background: #f0fdf4;">
-                    <div class="root-cause-title" style="color: #166534;">
-                        <i class="fas fa-clipboard-check"></i> 您的第一階段微調方案
-                    </div>
-                    <ul class="action-list" id="action-plan">
-                        </ul>
-                </div>
-
-                <div class="action-bar">
-                    <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> 列印報告 / 存為 PDF</button>
-                </div>
+            <div class="expert-commentary">
+                <strong>專家分析：</strong> 飲水量嚴重低於您的體重需求 (應為 2100ml+)。水分不足會導致血液濃稠度增加，減緩營養運輸至粒線體的速率。這也是為什麼您容易感到疲勞且代謝廢物難以排除的物理根源。
             </div>
         </div>
+
+        <div class="analysis-card">
+            <div class="card-header">
+                <div class="data-label"><i class="fas fa-moon"></i> 睡眠修復力</div>
+                <div class="data-value">5.5 小時 (淺眠)</div>
+            </div>
+            <div class="expert-commentary">
+                <strong>專家分析：</strong> 睡眠時間不足且品質差，這直接打亂了您的「瘦素 (Leptin)」分泌。這解釋了為什麼您隔天對澱粉的渴望極難克制。長期睡眠負債會讓身體處於「抗壓應激狀態」，即使不吃東西，身體也會因為保護機制而留住脂肪。
+            </div>
+        </div>
+
+        <div class="analysis-card">
+            <div class="card-header">
+                <div class="data-label"><i class="fas fa-clock"></i> 晝夜節律 (最後一餐)</div>
+                <div class="data-value">21:30 晚餐</div>
+            </div>
+            <div class="expert-commentary">
+                <strong>專家分析：</strong> 晚進食會干擾褪黑激素與胰島素的協作。在夜間血糖水平仍高時入睡，會完全封鎖夜間的「生長激素燃脂窗」。這也是導致您早晨醒來感到「非常疲憊」的關鍵——因為身體在睡覺時仍在處理能量，未能進入深層修復。
+            </div>
+        </div>
+
+        <div class="analysis-card">
+            <div class="card-header">
+                <div class="data-label"><i class="fas fa-brain"></i> 壓力指數 (HPA軸)</div>
+                <div class="data-value">8 / 10 (極高)</div>
+            </div>
+            <div class="expert-commentary">
+                <strong>專家分析：</strong> 高壓力係數代表您的皮質醇長期處於「戰或逃」高峰。皮質醇會指令身體分解肌肉來獲取能量，卻將能量囤積在腹部，這就是您「四肢瘦、肚子大」的內分泌真相。
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fas fa-project-diagram"></i> 數據連鎖反應評估 (Synthesis)</div>
+        <div class="synthesis-box">
+            <div class="synthesis-tag">核心病理邏輯</div>
+            <h4 style="margin-bottom: 15px; color: #1e3a8a;">「壓力 - 血糖 - 腹部囤積」三位一體螺旋</h4>
+            <p style="font-size: 0.95rem; color: #334155;">
+                統合您的數據發現：<strong>高壓力指數 (8/10)</strong> + <strong>低睡眠時間 (5.5h)</strong> + <strong>渴望甜食</strong> 形成了一個惡性循環。
+                <br><br>
+                1. 壓力讓皮質醇升高，迫使血糖上升以應對危機。<br>
+                2. 血糖上升引發胰島素頻繁分泌，造成<strong>「胰島素阻抗傾向」</strong>。<br>
+                3. 因細胞無法有效利用血糖，大腦發出「能量不足」假訊號，導致您<strong>渴望甜食</strong>。<br>
+                4. 未被利用的血糖在胰島素與皮質醇雙重作用下，精準定向存儲在<strong>腰圍區域</strong>。
+                <br><br>
+                <strong>專家結論：</strong> 您目前不具備「減重」的環境，而是在「生存」。直接節食只會讓代謝更崩潰。
+            </p>
+        </div>
+
+        <div class="section-title"><i class="fas fa-rocket"></i> 第一階段代謝修復路徑</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="analysis-card" style="border-top: 4px solid var(--secondary);">
+                <h4 style="color: var(--secondary)">1. 穩定血糖 (穩糖)</h4>
+                <p style="font-size: 0.85rem">早餐嚴禁精緻澱粉，優先攝取優質蛋白質與油脂。推薦：水煮蛋2顆+半顆酪梨。</p>
+            </div>
+            <div class="analysis-card" style="border-top: 4px solid var(--primary);">
+                <h4 style="color: var(--primary)">2. 降低皮質醇 (降壓)</h4>
+                <p style="font-size: 0.85rem">每晚睡前執行 5 分鐘 4-7-8 呼吸法。暫停高強度有氧運動，改為拉伸或散步。</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <p style="font-weight: 600;">這類代謝修復問題往往需要個性化評估。</p>
+            <p>如果您已嘗試多種方法仍未解決，歡迎私訊「諮詢」二字，了解我的 1對1 深度分析服務。</p>
+            <a href="#" class="consult-btn">立即預約 1對1 深度分析</a>
+        </div>
+
+        <div class="footer-bio">
+            <p><strong>代謝修復專家 | 提供1對1深度健康諮詢與方案定制</strong></p>
+            <p style="margin-top: 10px;">
+                我設計了一份「體重卡關根源評估」，專門為掙扎於減重的人理清：<br>
+                1️⃣ 能量代謝傾向：身體是在「節能模式」還是「燃燒模式」？<br>
+                2️⃣ 隱性壓力源：哪些荷爾蒙在阻礙你？<br>
+                3️⃣ 最佳切入點：該先調飲食、睡眠還是壓力？<br><br>
+                這已幫助 341 位有類似困擾的朋友找到個性化突破方向。完成評估後，我將親自為你分析並發送：<br>
+                🔹 初步「代謝類型」分析報告<br>
+                🔹「突破停滯期」飲食微調指南 (PDF)<br>
+                🔹 免費 15 分鐘 1對1 報告解讀諮詢資格。
+            </p>
+            <p style="margin-top: 15px; color: var(--primary); font-weight: bold;">現在留言 "xx" 獲取你的專屬評估表 👇</p>
+        </div>
     </div>
+</div>
 
-    <script>
-        // ==========================================
-        // 1. 數據源模擬 (模擬從 LocalStorage 獲取)
-        // ==========================================
-        const mockClients = [
-            {
-                id: 'MET2602038821',
-                igName: 'sarah_fitness',
-                investment: '願意投資',
-                commitment: '非常堅定',
-                stress_level: 9,
-                sleep_hours: '<5小時',
-                waist: 85,
-                gender: '女',
-                symptoms: ['渴望甜食', '腹部肥胖', '下午疲勞'],
-                problem: '產後肚子一直瘦不下來，即使少吃也沒用，下午很想吃麵包。',
-                methods: ['168斷食', '節食'],
-                water: '<1L',
-                morning_energy: '非常疲憊'
-            },
-            {
-                id: 'MET2602034451',
-                igName: 'jason_ceo',
-                investment: '願意投資',
-                commitment: '願意嘗試',
-                stress_level: 6,
-                sleep_hours: '5-6小時',
-                waist: 98,
-                gender: '男',
-                symptoms: ['易水腫', '食慾不穩定'],
-                problem: '醫生說內臟脂肪過高，工作應酬多，沒時間運動。',
-                methods: ['無'],
-                water: '1-2L',
-                morning_energy: '尚可'
-            },
-            {
-                id: 'MET2602029982',
-                igName: 'student_emily',
-                investment: '無法投資',
-                commitment: '需要觀望',
-                stress_level: 3,
-                sleep_hours: '7-8小時',
-                waist: 65,
-                gender: '女',
-                symptoms: ['手腳冰冷'],
-                problem: '想讓線條更好看，目前不胖但體脂高。',
-                methods: ['有氧運動'],
-                water: '>2L',
-                morning_energy: '精神飽滿'
-            }
-        ];
-
-        let currentClient = null;
-        let radarChart = null;
-
-        // ==========================================
-        // 2. 初始化與事件
-        // ==========================================
-        window.onload = function() {
-            // 填充下拉選單
-            const selector = document.getElementById('clientSelector');
-            
-            // 嘗試讀取 LocalStorage，如果沒有則使用模擬數據
-            const localData = JSON.parse(localStorage.getItem('metabolic_appointments'));
-            const dataToUse = localData && localData.length > 0 ? localData : mockClients;
-
-            dataToUse.forEach((client, index) => {
-                const option = document.createElement('option');
-                option.value = index; // 使用索引來選取
-                // 將數據存儲在 DOM 元素中以便讀取
-                option.dataset.client = JSON.stringify(client);
-                option.text = `${client.id} - ${client.igName} (${client.investment})`;
-                selector.add(option);
-            });
-
-            // 載入第一位客戶
-            loadClientData();
-        };
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.report-container').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        // ==========================================
-        // 3. 核心邏輯：載入並生成報告
-        // ==========================================
-        function loadClientData() {
-            const selector = document.getElementById('clientSelector');
-            const selectedOption = selector.options[selector.selectedIndex];
-            currentClient = JSON.parse(selectedOption.dataset.client);
-
-            console.log("載入客戶數據:", currentClient);
-
-            // 生成兩份報告
-            generatePreliminaryReport(currentClient);
-            generateDetailedReport(currentClient);
-        }
-
-        // --- 生成初步報告 (Admin) ---
-        function generatePreliminaryReport(data) {
-            // 投資意願
-            const invEl = document.getElementById('p-invest');
-            invEl.textContent = data.investment;
-            invEl.style.color = data.investment === '願意投資' ? 'var(--success)' : 'var(--danger)';
-
-            document.getElementById('p-commit').textContent = data.commitment;
-            
-            // 計算成交分 (簡易算法)
-            let score = 50;
-            if(data.investment === '願意投資') score += 30;
-            if(data.investment === '可能投資') score += 10;
-            if(data.commitment === '非常堅定') score += 20;
-            if(data.stress_level > 7) score += 10; // 痛點高
-            
-            const scoreEl = document.getElementById('p-score');
-            scoreEl.textContent = score + '%';
-            scoreEl.style.color = score > 80 ? 'var(--success)' : (score > 60 ? 'var(--warning)' : 'var(--text-gray)');
-
-            // 銷售建議
-            let advice = "標準跟進流程";
-            if (score > 80) advice = "🔥 高優先級！直接預約深度諮詢，強調「根源解決」。";
-            else if (data.investment === '無法投資') advice = "轉入社群培育，提供免費素材，勿花過多時間。";
-            else advice = "需要教育。發送成功案例，建立信任感。";
-            document.getElementById('p-advice').textContent = advice;
-
-            // 風險評估
-            let bodyRisk = "低";
-            const waistLimit = data.gender === '男' ? 90 : 80;
-            if (parseInt(data.waist) > waistLimit) bodyRisk = "⚠️ 高 (內臟脂肪風險)";
-            document.getElementById('p-body-risk').textContent = bodyRisk;
-            
-            document.getElementById('p-stress').textContent = data.stress_level + '/10';
-
-            // 症狀標籤
-            const tagsContainer = document.getElementById('p-symptoms-tags');
-            tagsContainer.innerHTML = '';
-            (data.symptoms || []).forEach(sym => {
-                const span = document.createElement('span');
-                span.className = 'tag urgent';
-                span.textContent = sym;
-                tagsContainer.appendChild(span);
-            });
-
-            // 痛點
-            document.getElementById('p-pain').textContent = `"${data.problem}"`;
-            document.getElementById('p-history').textContent = (data.methods || []).join(', ') || '無';
-        }
-
-        // --- 生成詳細報告 (Client) ---
-        function generateDetailedReport(data) {
-            document.getElementById('d-id').textContent = data.id;
-            document.getElementById('d-name').textContent = data.igName;
-
-            // 1. 更新雷達圖
-            updateRadarChart(data);
-
-            // 2. 生成動態分析文案 (邏輯引擎)
-            const analysisContainer = document.getElementById('dynamic-analysis');
-            analysisContainer.innerHTML = ''; // 清空
-
-            // 規則 1: 壓力型
-            if (parseInt(data.stress_level) >= 7) {
-                analysisContainer.innerHTML += createAnalysisBlock(
-                    '⚠️ 隱性壓力荷爾蒙 (Cortisol) 失衡',
-                    `檢測顯示您的壓力指數高達 ${data.stress_level}/10。長期高皮質醇會導致「假性飢餓」並直接命令身體分解肌肉、堆積腹部脂肪。這解釋了為什麼您提到「${data.problem.substring(0, 10)}...」的問題。`
-                );
-            }
-
-            // 規則 2: 睡眠不足
-            if (data.sleep_hours === '<5小時' || data.sleep_hours === '5-6小時') {
-                analysisContainer.innerHTML += createAnalysisBlock(
-                    '💤 夜間代謝修復受阻',
-                    '睡眠不足會導致「瘦素(Leptin)」下降與「飢餓素(Ghrelin)」上升。數據顯示您的睡眠時間不足，這會導致隔天基礎代謝率下降 5-10%，並且更渴望高糖食物。'
-                );
-            }
-
-            // 規則 3: 胰島素/飲食
-            if ((data.symptoms || []).includes('渴望甜食') || (data.symptoms || []).includes('腹部肥胖')) {
-                analysisContainer.innerHTML += createAnalysisBlock(
-                    '🍞 胰島素阻抗 (Insulin Resistance) 傾向',
-                    '您的症狀（腹部囤積、渴望澱粉）強烈指向血糖波動問題。這代表您的細胞對胰島素不敏感，導致能量無法被利用，反而全部轉化為脂肪儲存。'
-                );
-            }
-
-            // 規則 4: 基礎代謝 (如果都沒有上述嚴重問題)
-            if (analysisContainer.innerHTML === '') {
-                analysisContainer.innerHTML += createAnalysisBlock(
-                    '🔥 基礎代謝效率評估',
-                    '雖然沒有極端的風險指標，但目前的代謝處於「停滯期」。需要透過特定的飲食微調來重新啟動粒線體燃脂功能。'
-                );
-            }
-
-            // 3. 生成行動方案
-            const actionList = document.getElementById('action-plan');
-            actionList.innerHTML = '';
-            
-            let actions = [];
-            // 根據數據推導建議
-            if (parseInt(data.stress_level) >= 7) {
-                actions.push('<strong>優先降壓：</strong> 暫停高強度有氧，改為每日 15 分鐘呼吸練習或瑜伽，降低皮質醇。');
-                actions.push('<strong>補充鎂元素：</strong> 建議晚餐後補充甘胺酸鎂，幫助神經放鬆與代謝壓力。');
-            }
-            if ((data.symptoms || []).includes('渴望甜食')) {
-                actions.push('<strong>早餐調整：</strong> 絕對避免純澱粉早餐（麵包/果汁）。改為「高蛋白+好油脂」（如雞蛋+酪梨），穩定整日血糖。');
-            }
-            if (data.water === '<1L') {
-                actions.push('<strong>基礎水合：</strong> 您的飲水量嚴重不足，請設定鬧鐘每小時喝 200ml 水，這是啟動脂肪分解的最基本條件。');
-            }
-            
-            // 填充建議
-            if (actions.length === 0) actions.push('建議預約一對一諮詢以獲取詳細方案。');
-            
-            actions.forEach(act => {
-                actionList.innerHTML += `<li>${act}</li>`;
-            });
-        }
-
-        function createAnalysisBlock(title, content) {
-            return `
-                <div class="analysis-block">
-                    <div class="root-cause-title">${title}</div>
-                    <p style="color: #475569; line-height: 1.6;">${content}</p>
-                </div>
-            `;
-        }
-
-        // --- 雷達圖繪製 ---
-        function updateRadarChart(data) {
-            const ctx = document.getElementById('metabolicRadar').getContext('2d');
-            
-            // 計算分數 (反向邏輯：問題越大分數越低)
-            const stressScore = 10 - parseInt(data.stress_level);
-            let sleepScore = 5;
-            if (data.sleep_hours === '>8小時') sleepScore = 9;
-            else if (data.sleep_hours === '7-8小時') sleepScore = 10;
-            else if (data.sleep_hours === '5-6小時') sleepScore = 6;
-            else sleepScore = 3;
-
-            const dietScore = (data.symptoms || []).includes('渴望甜食') ? 4 : 8;
-            const energyScore = data.morning_energy === '精神飽滿' ? 9 : (data.morning_energy === '非常疲憊' ? 3 : 6);
-            
-            // 銷毀舊圖表
-            if (radarChart) radarChart.destroy();
-
-            radarChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['壓力調節', '睡眠品質', '飲食控制', '早晨能量', '代謝靈活度'],
-                    datasets: [{
-                        label: '您的代謝現況',
-                        data: [stressScore, sleepScore, dietScore, energyScore, 6], // 最後一項為預設
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderColor: '#2563eb',
-                        pointBackgroundColor: '#2563eb',
-                        pointBorderColor: '#fff',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    scales: {
-                        r: {
-                            angleLines: { color: '#cbd5e1' },
-                            grid: { color: '#cbd5e1' },
-                            pointLabels: { font: { size: 14, family: "'M PLUS Rounded 1c'" }, color: '#334155' },
-                            suggestedMin: 0,
-                            suggestedMax: 10
-                        }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-        }
-    </script>
 </body>
 </html>
