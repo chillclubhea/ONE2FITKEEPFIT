@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跑步心率區間計算器 | Zone 1-5 詳細說明</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e5799 0%, #207cca 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #1e5799;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #eaeaea;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 80px;
+            height: 3px;
+            background-color: #207cca;
+        }
+        
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .calculator-box, .result-box {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #207cca;
+        }
+        
+        /* 移除數字輸入框的上下箭頭 */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        .formula-box {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #207cca;
+        }
+        
+        .formula-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e5799;
+        }
+        
+        .btn-calculate {
+            background: linear-gradient(to right, #207cca, #1e5799);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-calculate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(30, 87, 153, 0.2);
+        }
+        
+        .btn-calculate:active {
+            transform: translateY(-1px);
+        }
+        
+        .heart-rate-display {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .hr-value {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 150px;
+            margin: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .hr-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .hr-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e5799;
+        }
+        
+        .zones-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .zone-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .zone-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .zone-header {
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .zone-title {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .zone-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .zone-body {
+            padding: 20px;
+        }
+        
+        .zone-percentage {
+            font-weight: 600;
+            color: #1e5799;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .zone-feel, .zone-function {
+            margin-bottom: 15px;
+        }
+        
+        .zone-feel-title, .zone-function-title {
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 5px;
+        }
+        
+        /* Zone specific colors */
+        .zone-1 .zone-header { background-color: #4CAF50; }
+        .zone-2 .zone-header { background-color: #2196F3; }
+        .zone-3 .zone-header { background-color: #FF9800; }
+        .zone-4 .zone-header { background-color: #F44336; }
+        .zone-5 .zone-header { background-color: #9C27B0; }
+        
+        .zone-1 .zone-percentage { color: #4CAF50; }
+        .zone-2 .zone-percentage { color: #2196F3; }
+        .zone-3 .zone-percentage { color: #FF9800; }
+        .zone-4 .zone-percentage { color: #F44336; }
+        .zone-5 .zone-percentage { color: #9C27B0; }
+        
+        .zone-results {
+            display: none;
+            margin-top: 25px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .zone-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .zone-table th {
+            background-color: #f0f7ff;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e5799;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .zone-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .zone-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .zone-table .zone-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .note-box {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #FFC107;
+        }
+        
+        .note-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #ff9800;
+        }
+        
+        .result-active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .warning {
+            color: #f44336;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .heart-icon {
+            color: #f44336;
+            margin-right: 5px;
+        }
+        
+        .input-hint {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-running heart-icon"></i> 跑步心率區間計算器</h1>
+            <p class="subtitle">了解您的Zone 1-5心率區間，科學訓練提升跑步表現</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="calculator-section">
+            <h2 class="section-title">心率區間計算器</h2>
+            <div class="calculator-container">
+                <div class="calculator-box">
+                    <div class="input-group">
+                        <label for="age">年齡</label>
+                        <input type="number" id="age" min="10" max="100" value="30" step="1">
+                        <div class="input-hint">請直接輸入年齡數字 (10-100歲)</div>
+                        <div class="warning" id="age-warning"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="resting-hr">靜止心率 (選填，用於Karvonen公式)</label>
+                        <input type="number" id="resting-hr" min="40" max="100" placeholder="例如：60" step="1">
+                        <div class="input-hint">請直接輸入靜止心率數字 (40-100 bpm)</div>
+                        <div class="warning" id="resting-hr-warning"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="formula-type">計算公式</label>
+                        <select id="formula-type">
+                            <option value="basic">基礎公式 (220 - 年齡)</option>
+                            <option value="karvonen">Karvonen公式 (含靜止心率)</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-calculate" id="calculate-btn">
+                        <i class="fas fa-calculator"></i> 計算心率區間
+                    </button>
+                    
+                    <div class="formula-box">
+                        <div class="formula-title">基礎心率計算公式</div>
+                        <p>最大心率 (Max HR) = 220 - 年齡</p>
+                        <p>目標運動心率 = 最大心率 × 運動強度%</p>
+                    </div>
+                    
+                    <div class="formula-box">
+                        <div class="formula-title">Karvonen公式 (更精確)</div>
+                        <p>最大心率 (Max HR) = 220 - 年齡</p>
+                        <p>目標心率 = (最大心率 - 靜止心率) × 運動強度% + 靜止心率</p>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <h3 style="color: #1e5799; margin-bottom: 20px;">您的計算結果</h3>
+                    <div class="heart-rate-display">
+                        <div class="hr-value">
+                            <div class="hr-label">最大心率</div>
+                            <div class="hr-number" id="max-hr">--</div>
+                        </div>
+                        <div class="hr-value">
+                            <div class="hr-label">靜止心率</div>
+                            <div class="hr-number" id="rest-hr">--</div>
+                        </div>
+                    </div>
+                    
+                    <div class="note-box">
+                        <div class="note-title">計算說明</div>
+                        <p>請在左側輸入您的年齡和靜止心率（選填），然後點擊「計算心率區間」按鈕。系統將根據您選擇的公式計算出您的各區間心率範圍。</p>
+                    </div>
+                    
+                    <div class="zone-results" id="zone-results">
+                        <h4 style="margin-bottom: 15px; color: #444;">您的心率區間詳細數據</h4>
+                        <table class="zone-table">
+                            <thead>
+                                <tr>
+                                    <th>區間</th>
+                                    <th>名稱</th>
+                                    <th>心率範圍</th>
+                                    <th>強度%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="zone-table-body">
+                                <!-- 將由JavaScript動態生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="zones-section">
+            <h2 class="section-title">跑步心率五區間詳細說明</h2>
+            <div class="zones-container">
+                <!-- Zone 1 -->
+                <div class="zone-card zone-1">
+                    <div class="zone-header">
+                        <div class="zone-title">Zone 1</div>
+                        <div class="zone-subtitle">輕鬆/恢復區</div>
+                    </div>
+                    <div class="zone-body">
+                        <div class="zone-percentage">約 50-60% 最大心率</div>
+                        <div class="zone-feel">
+                            <div class="zone-feel-title">感受：</div>
+                            <div>極輕鬆，可邊跑邊聊天，幾乎不喘</div>
+                        </div>
+                        <div class="zone-function">
+                            <div class="zone-function-title">主要作用：</div>
+                            <div>熱身、緩和、恢復跑、促進血液循環、基礎有氧訓練</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Zone 2 -->
+                <div class="zone-card zone-2">
+                    <div class="zone-header">
+                        <div class="zone-title">Zone 2</div>
+                        <div class="zone-subtitle">耐力/燃脂區</div>
+                    </div>
+                    <div class="zone-body">
+                        <div class="zone-percentage">約 60-70% 最大心率</div>
+                        <div class="zone-feel">
+                            <div class="zone-feel-title">感受：</div>
+                            <div>舒適的慢跑，可維持很長時間，能完整對話</div>
+                        </div>
+                        <div class="zone-function">
+                            <div class="zone-function-title">主要作用：</div>
+                            <div>建立有氧基礎、提高脂肪代謝率、提升長跑能力</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Zone 3 -->
+                <div class="zone-card zone-3">
+                    <div class="zone-header">
+                        <div class="zone-title">Zone 3</div>
+                        <div class="zone-subtitle">有氧能力/節奏區</div>
+                    </div>
+                    <div class="zone-body">
+                        <div class="zone-percentage">約 70-80% 最大心率</div>
+                        <div class="zone-feel">
+                            <div class="zone-feel-title">感受：</div>
+                            <div>稍微費力，喘氣較快，只能說短句，但能維持較長時間</div>
+                        </div>
+                        <div class="zone-function">
+                            <div class="zone-function-title">主要作用：</div>
+                            <div>提升乳酸清除能力、增強心肺功能、增加肌耐力</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Zone 4 -->
+                <div class="zone-card zone-4">
+                    <div class="zone-header">
+                        <div class="zone-title">Zone 4</div>
+                        <div class="zone-subtitle">乳酸閾值區</div>
+                    </div>
+                    <div class="zone-body">
+                        <div class="zone-percentage">約 80-90% 最大心率</div>
+                        <div class="zone-feel">
+                            <div class="zone-feel-title">感受：</div>
+                            <div>艱苦，無法輕鬆說話，速度接近半馬配速</div>
+                        </div>
+                        <div class="zone-function">
+                            <div class="zone-function-title">主要作用：</div>
+                            <div>提高乳酸閾值（延緩疲勞）、提升比賽配速能力</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Zone 5 -->
+                <div class="zone-card zone-5">
+                    <div class="zone-header">
+                        <div class="zone-title">Zone 5</div>
+                        <div class="zone-subtitle">最大攝氧量/衝刺區</div>
+                    </div>
+                    <div class="zone-body">
+                        <div class="zone-percentage">約 90-100% 最大心率</div>
+                        <div class="zone-feel">
+                            <div class="zone-feel-title">感受：</div>
+                            <div>極限速度，只能維持數秒到幾分鐘，呼吸非常急促</div>
+                        </div>
+                        <div class="zone-function">
+                            <div class="zone-function-title">主要作用：</div>
+                            <div>提升最大攝氧量（VO2 Max）、爆發力訓練、無氧能力</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-box">
+                <div class="note-title">訓練建議</div>
+                <p>1. 初學者應從Zone 1-2開始，逐漸增加Zone 3訓練比例</p>
+                <p>2. Zone 4-5屬於高強度訓練，每週不宜超過總訓練量的10-20%</p>
+                <p>3. 每次訓練前應在Zone 1進行5-10分鐘熱身，訓練後在Zone 1進行5-10分鐘緩和</p>
+                <p>4. 理想的訓練組合應包含不同心率區間的訓練，以全面提升跑步能力</p>
+            </div>
+            
+            <div class="note-box">
+                <div class="note-title">如何測量靜止心率？</div>
+                <p>1. 在早晨醒來後，尚未下床前測量</p>
+                <p>2. 使用心率監測設備或手動測量脈搏</p>
+                <p>3. 連續測量3天取平均值，結果更準確</p>
+                <p>4. 正常靜止心率範圍：一般成人60-100 bpm，運動員可能低至40-60 bpm</p>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="container">
+        <p>© 2023 跑步心率區間計算器 | 本工具僅供參考，實際訓練請諮詢專業教練或醫師</p>
+        <p style="margin-top: 10px;">注意：公式計算的心率值為預估值，實際最大心率可能因個人體質、健康狀況而異</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculate-btn');
+            const ageInput = document.getElementById('age');
+            const restingHrInput = document.getElementById('resting-hr');
+            const formulaTypeSelect = document.getElementById('formula-type');
+            const maxHrDisplay = document.getElementById('max-hr');
+            const restHrDisplay = document.getElementById('rest-hr');
+            const zoneResults = document.getElementById('zone-results');
+            const zoneTableBody = document.getElementById('zone-table-body');
+            const ageWarning = document.getElementById('age-warning');
+            const restingHrWarning = document.getElementById('resting-hr-warning');
+            
+            // 心率區間定義
+            const zones = [
+                { name: "Zone 1", description: "輕鬆/恢復區", minPercent: 50, maxPercent: 60, color: "#4CAF50" },
+                { name: "Zone 2", description: "耐力/燃脂區", minPercent: 60, maxPercent: 70, color: "#2196F3" },
+                { name: "Zone 3", description: "有氧能力/節奏區", minPercent: 70, maxPercent: 80, color: "#FF9800" },
+                { name: "Zone 4", description: "乳酸閾值區", minPercent: 80, maxPercent: 90, color: "#F44336" },
+                { name: "Zone 5", description: "最大攝氧量/衝刺區", minPercent: 90, maxPercent: 100, color: "#9C27B0" }
+            ];
+            
+            // 計算按鈕點擊事件
+            calculateBtn.addEventListener('click', function() {
+                calculateHeartRateZones();
+            });
+            
+            // 公式選擇變化時
+            formulaTypeSelect.addEventListener('change', function() {
+                if (this.value === 'karvonen') {
+                    restingHrInput.placeholder = "建議填寫，例如：60";
+                } else {
+                    restingHrInput.placeholder = "例如：60";
+                }
+            });
+            
+            // 輸入框事件 - 允許手動輸入
+            ageInput.addEventListener('input', validateAgeInput);
+            restingHrInput.addEventListener('input', validateRestingHrInput);
+            
+            // 輸入框失去焦點時檢查
+            ageInput.addEventListener('blur', function() {
+                validateAgeInput();
+                if (ageInput.value) calculateHeartRateZones();
+            });
+            
+            restingHrInput.addEventListener('blur', function() {
+                validateRestingHrInput();
+                if (ageInput.value) calculateHeartRateZones();
+            });
+            
+            // 驗證年齡輸入
+            function validateAgeInput() {
+                const age = parseInt(ageInput.value);
+                ageWarning.textContent = '';
+                
+                if (!ageInput.value) {
+                    ageWarning.textContent = '請輸入年齡';
+                    return false;
+                }
+                
+                if (isNaN(age) || age < 10 || age > 100) {
+                    ageWarning.textContent = '請輸入有效的年齡（10-100歲之間）';
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // 驗證靜止心率輸入
+            function validateRestingHrInput() {
+                const restingHr = parseInt(restingHrInput.value);
+                restingHrWarning.textContent = '';
+                
+                // 如果沒有輸入值，且使用Karvonen公式，顯示警告
+                if (!restingHrInput.value && formulaTypeSelect.value === 'karvonen') {
+                    restingHrWarning.textContent = '使用Karvonen公式時建議填寫靜止心率';
+                    return false;
+                }
+                
+                // 如果有輸入值但無效
+                if (restingHrInput.value && (isNaN(restingHr) || restingHr < 40 || restingHr > 100)) {
+                    restingHrWarning.textContent = '請輸入有效的靜止心率（40-100 bpm之間）';
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // 計算心率區間
+            function calculateHeartRateZones() {
+                // 清除之前的警告
+                ageWarning.textContent = '';
+                restingHrWarning.textContent = '';
+                
+                // 驗證輸入
+                const isAgeValid = validateAgeInput();
+                if (!isAgeValid) return;
+                
+                const isRestingHrValid = validateRestingHrInput();
+                if (formulaTypeSelect.value === 'karvonen' && !isRestingHrValid && restingHrInput.value) {
+                    return;
+                }
+                
+                // 獲取輸入值
+                const age = parseInt(ageInput.value);
+                const restingHr = restingHrInput.value ? parseInt(restingHrInput.value) : null;
+                const formulaType = formulaTypeSelect.value;
+                
+                // 計算最大心率
+                const maxHr = 220 - age;
+                
+                // 顯示基礎結果
+                maxHrDisplay.textContent = maxHr + " bpm";
+                restHrDisplay.textContent = restingHr ? restingHr + " bpm" : "--";
+                
+                // 計算並顯示各區間心率
+                const zoneData = [];
+                
+                zones.forEach(zone => {
+                    let minHr, maxHrZone;
+                    
+                    if (formulaType === 'basic' || !restingHr) {
+                        // 使用基礎公式
+                        minHr = Math.round(maxHr * zone.minPercent / 100);
+                        maxHrZone = Math.round(maxHr * zone.maxPercent / 100);
+                    } else {
+                        // 使用Karvonen公式
+                        const hrReserve = maxHr - restingHr;
+                        minHr = Math.round((hrReserve * zone.minPercent / 100) + restingHr);
+                        maxHrZone = Math.round((hrReserve * zone.maxPercent / 100) + restingHr);
+                    }
+                    
+                    zoneData.push({
+                        name: zone.name,
+                        description: zone.description,
+                        minHr: minHr,
+                        maxHr: maxHrZone,
+                        minPercent: zone.minPercent,
+                        maxPercent: zone.maxPercent,
+                        color: zone.color
+                    });
+                });
+                
+                // 生成表格內容
+                let tableHTML = '';
+                zoneData.forEach(zone => {
+                    tableHTML += `
+                        <tr>
+                            <td><div class="zone-color" style="background-color: ${zone.color}"></div></td>
+                            <td><strong>${zone.name}</strong><br>${zone.description}</td>
+                            <td><strong>${zone.minHr} - ${zone.maxHr} bpm</strong></td>
+                            <td>${zone.minPercent}% - ${zone.maxPercent}%</td>
+                        </tr>
+                    `;
+                });
+                
+                zoneTableBody.innerHTML = tableHTML;
+                
+                // 顯示結果區域
+                zoneResults.classList.add('result-active');
+                
+                // 添加滾動動畫
+                zoneResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            // 初始計算（使用默認值）
+            calculateHeartRateZones();
+        });
+    </script>
+</body>
+</html>
